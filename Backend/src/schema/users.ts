@@ -14,7 +14,7 @@ export enum AccountStatus {
   UNBAN = 'UNBAN',
 }
 
-@NestSchema()
+@NestSchema({ timestamps: true })
 export class Users {
   _id: string;
   @Prop({ required: true, unique: true })

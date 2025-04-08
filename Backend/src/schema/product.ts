@@ -9,7 +9,7 @@ export enum ProductCategory {
   SPORTS = 'Sports',
   UNKNOWN = 'Unknown',
 }
-@NestSchema()
+@NestSchema({ timestamps: true })
 export class Products {
   _id: string;
 

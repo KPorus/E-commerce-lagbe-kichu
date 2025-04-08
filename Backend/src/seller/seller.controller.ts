@@ -28,6 +28,7 @@ export class SellerController {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
+  // Add a new product ===============================
   @Post('/upload-product')
   @UseGuards(CombinGuard)
   // @UseGuards(InventoryGuard)
@@ -66,7 +67,6 @@ export class SellerController {
 
     // console.log('Image URLs:', imageUrls);
     // console.log('Video URL:', videoUrl);
-
     return this.sellerService.addProduct({
       ...body,
       images: imageUrls,
@@ -74,7 +74,7 @@ export class SellerController {
     });
   }
 
-  // Edit a product
+  // Edit a product ===============================
   @UseGuards(CombinGuard)
   @Put('/update-product/:id')
   @UseInterceptors(FilesInterceptor('images', 5))
@@ -121,20 +121,21 @@ export class SellerController {
     });
   }
 
-  // Get all products of a seller
+  // Get all products of a seller ===============================
   @UseGuards(CombinGuard)
   @Get('/get-products/:id')
   getProducts(@Param('id') id: string) {
     return this.sellerService.getProducts(id);
   }
 
-  // Delete a product by ID
+  // Delete a product by ID ===============================
   @UseGuards(CombinGuard)
   @Delete('/delete-product/:productId')
   deleteProduct(@Param('productId') productId: string) {
     return this.sellerService.deleteProduct(productId);
   }
 
+  // Create a seller employee ===============================
   @Post('/create/:id')
   @UseGuards(SellerGuard)
   createUsers(@Param('id') id: string, @Body() dto: CreateUserDto) {

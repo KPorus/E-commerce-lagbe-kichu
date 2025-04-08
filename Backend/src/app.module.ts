@@ -6,6 +6,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { AdminModule } from './admin/admin.module';
 import { SellerModule } from './seller/seller.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     AdminModule,
     SellerModule,
     CloudinaryModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

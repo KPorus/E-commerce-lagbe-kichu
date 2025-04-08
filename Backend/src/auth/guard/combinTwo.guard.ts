@@ -21,12 +21,12 @@ export class CombinGuard extends AuthGuard('jwt') {
 
     if (
       !user ||
-      (user.role !== UserRole.INVENTORY &&
+      (user.role !== UserRole.ACCOUNTANT &&
         user.role !== UserRole.MANAGER &&
         user.role !== UserRole.SELLER)
     ) {
       throw new ForbiddenException(
-        'Only INVENTORY, MANAGER, or SELLER can access this route',
+        'Only ACCOUNTANT, MANAGER, or SELLER can access this route',
       );
     }
 
