@@ -5,6 +5,7 @@ import { DatabaseModule } from './database/database.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AdminModule } from './admin/admin.module';
 import { SellerModule } from './seller/seller.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { SellerModule } from './seller/seller.module';
     }),
     AdminModule,
     SellerModule,
+    CloudinaryModule,
   ],
 })
 export class AppModule {}

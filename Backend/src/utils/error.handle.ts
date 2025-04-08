@@ -8,7 +8,7 @@ import { MongoError } from 'mongodb';
 export const handleMongoErrors = (error: any, customMessage?: string) => {
   if (error instanceof MongoError) {
     if (error.code === 11000) {
-      throw new ConflictException(customMessage || 'User Already exists');
+      throw new ConflictException(customMessage || 'Already exists');
     }
   }
   // Handle Mongoose CastError (Invalid ObjectId)

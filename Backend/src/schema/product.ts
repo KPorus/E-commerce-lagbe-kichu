@@ -4,16 +4,16 @@ import { Types } from 'mongoose';
 export enum ProductCategory {
   ELECTRONICS = 'Electronics',
   CLOTHING = 'Clothing',
-  HOME = 'Home',
+  FURNITURE = 'Furniture',
   BEAUTY = 'Beauty',
   SPORTS = 'Sports',
   UNKNOWN = 'Unknown',
 }
 @NestSchema()
-export class Product {
+export class Products {
   _id: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, index: true })
   title: string;
 
   @Prop({ required: true })
@@ -43,5 +43,5 @@ export class Product {
   created_at: Date;
 }
 
-export const ProductSchema = SchemaFactory.createForClass(Product);
+export const ProductSchema = SchemaFactory.createForClass(Products);
 ProductSchema.index({ _id: 1 }, { background: true });
