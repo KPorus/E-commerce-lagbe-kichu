@@ -20,7 +20,7 @@ export class Users {
   @Prop({ required: true, unique: true })
   username: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, index: true })
   email: string;
 
   @Prop({ required: true })
@@ -32,13 +32,11 @@ export class Users {
   @Prop({ enum: AccountStatus, default: AccountStatus.UNBAN })
   status: AccountStatus;
 
-  @Prop({ type: Types.ObjectId, ref: 'Users', default: null })
-  created_by: string;
+  @Prop({ type: Types.ObjectId, ref: 'Users', default: null, index: true })
+  created_by: Types.ObjectId | null;
 
   @Prop({ required: true, default: Date.now() })
   created_at: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(Users);
-UserSchema.index({ created_by: 1 }, { background: true });
-UserSchema.index({ email: 1 }, { background: true });

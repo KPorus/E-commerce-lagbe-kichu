@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AdminModule } from './admin/admin.module';
+import { SellerModule } from './seller/seller.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AdminModule } from './admin/admin.module';
       isGlobal: true,
     }),
     AdminModule,
+    SellerModule,
   ],
 })
 export class AppModule {}

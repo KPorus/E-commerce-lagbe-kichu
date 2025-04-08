@@ -6,6 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountStatus, Users } from 'src/schema/users';
+import { handleMongoErrors } from 'src/utils/error.handle';
 
 @Injectable()
 export class AdminService {
@@ -43,7 +44,7 @@ export class AdminService {
       };
     } catch (error: unknown) {
       if (error instanceof Error) {
-        throw new BadRequestException(`Error: ${error.message}`);
+        handleMongoErrors(error);
       }
       throw new BadRequestException(
         'Unknown error occurred while banning user',
@@ -67,7 +68,7 @@ export class AdminService {
       };
     } catch (error: unknown) {
       if (error instanceof Error) {
-        throw new BadRequestException(`Error: ${error.message}`);
+        handleMongoErrors(error);
       }
       throw new BadRequestException(
         'Unknown error occurred while unbanning user',

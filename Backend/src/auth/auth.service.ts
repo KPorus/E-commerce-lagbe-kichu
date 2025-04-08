@@ -60,6 +60,7 @@ export class AuthService {
       const user = new this.userModel({
         username: dto.username,
         email: dto.email,
+        role: dto.role,
         password: hash,
       });
       // console.log('indside', user);
