@@ -11,6 +11,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { dycrypt, encryptPassword } from './encrypt';
 import { handleMongoErrors } from 'src/utils/error.handle';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
   ) {}
 
   // Login Function
-  async login(dto: ILoginBody) {
+  async login(dto: ILoginBody, res: Response) {
     const user = await this.userModel
       .findOne({ email: dto.email })
       .select('+password');
@@ -40,15 +41,23 @@ export class AuthService {
       }
       throw new UnauthorizedException('Unknown error occurred while log in');
     }
-    const token = await this.signToken(
-      user._id.toString(),
-      user.email,
-      user.role,
-    );
-    return {
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken(user._id.toString(), user.email, user.role),
+      this.signRefreshToken(user._id.toString(), user.email, user.role),
+    ]);
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+    console.log('Refresh token set in cookie');
+
+    return res.json({
       data: userData,
-      token: token,
-    };
+      token: accessToken,
+    });
   }
 
   // Register Function
@@ -88,5 +97,19 @@ export class AuthService {
     });
 
     return token;
+  }
+
+  async signRefreshToken(
+    id: string,
+    email: string,
+    role: UserRole,
+  ): Promise<string> {
+    const payload = { sub: id, email, role };
+    const refreshToken = await this.jwt.signAsync(payload, {
+      secret: this.config.get<string>('JWT_SECRET'),
+      expiresIn: '7d',
+    });
+
+    return refreshToken;
   }
 }
