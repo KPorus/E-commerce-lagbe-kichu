@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -33,14 +33,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const user = await this.userModel.findOne({ _id: payload.sub });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
-
-    // Role-based authorization check inside validate
-    // if (user.role !== UserRole.ADMIN) {
-    //   throw new ForbiddenException('Insufficient permissions');
-    // }
-
     return user;
   }
 }

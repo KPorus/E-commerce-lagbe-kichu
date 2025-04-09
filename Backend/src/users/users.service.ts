@@ -184,6 +184,7 @@ export class UsersService {
     try {
       const orders = await this.orderModel.aggregate([
         { $match: { user: new Types.ObjectId(userId) } },
+        { $unwind: '$products' },
         {
           $lookup: {
             from: 'products',
@@ -192,23 +193,24 @@ export class UsersService {
             as: 'productDetails',
           },
         },
-        { $unwind: { path: '$products' } },
-        { $unwind: { path: '$productDetails' } },
+        { $unwind: '$productDetails' },
         {
           $project: {
             productId: '$products.productId',
             quantity: '$products.quantity',
-            price: '$products.price',
             productTitle: '$productDetails.title',
             productPrice: '$productDetails.price',
             productImages: '$productDetails.images',
+            totalPrice: {
+              $multiply: ['$products.quantity', '$productDetails.price'],
+            },
           },
         },
         {
           $group: {
             _id: '$productId',
             quantity: { $sum: '$quantity' },
-            totalPrice: { $sum: { $multiply: ['$quantity', '$price'] } },
+            totalPrice: { $sum: '$totalPrice' },
             productTitle: { $first: '$productTitle' },
             productPrice: { $first: '$productPrice' },
             productImages: { $first: '$productImages' },

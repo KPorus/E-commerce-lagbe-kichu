@@ -53,10 +53,9 @@ export class UsersController {
       throw new BadRequestException('Error during checkout: ' + error.message);
     }
   }
-  @Get('view-order')
+  @Get('/view-order')
   async getOrders(@GetUser() user) {
     try {
-      console.log(user);
       const order = await this.userService.getOrderList(user._id);
       return order;
     } catch (error) {

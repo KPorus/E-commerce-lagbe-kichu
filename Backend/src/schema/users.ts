@@ -34,9 +34,6 @@ export class Users {
 
   @Prop({ type: Types.ObjectId, ref: 'Users', default: null, index: true })
   created_by: Types.ObjectId | null;
-
-  @Prop({ required: true, default: Date.now() })
-  created_at: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(Users);
