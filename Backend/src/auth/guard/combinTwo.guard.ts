@@ -8,7 +8,7 @@ import { Reflector } from '@nestjs/core';
 import { UserRole } from 'src/schema/users';
 
 @Injectable()
-export class CombinGuard extends AuthGuard('jwt') {
+export class CombinTwoGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     super();
   }

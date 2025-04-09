@@ -6,6 +6,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
   Put,
   UploadedFiles,
@@ -22,6 +23,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { CombinGuard } from 'src/auth/guard/combin.guard';
 import { GetUser } from 'src/auth/decorator';
 import { Types } from 'mongoose';
+import { CombinTwoGuard } from 'src/auth/guard/combinTwo.guard';
 
 @Controller('seller')
 export class SellerController {
@@ -157,5 +159,30 @@ export class SellerController {
   @UseGuards(SellerGuard)
   createUsers(@Param('id') id: string, @Body() dto: CreateUserDto) {
     return this.sellerService.createUsers(dto, id);
+  }
+
+  // Get Seller order ================================
+  @Get('/get-orders')
+  @UseGuards(CombinTwoGuard)
+  getOrders(@GetUser() user: any) {
+    console.log(user);
+    const id = user._id || user.created_by;
+    if (!id) {
+      throw new BadRequestException('Invalid user ID');
+    }
+    return this.sellerService.getOrders(id);
+  }
+  @Patch('/update-orders-status/:id')
+  @UseGuards(CombinTwoGuard)
+  updateOrdersStatus(
+    @GetUser() user: any,
+    @Param('id') id: string,
+    @Body() status: { status: string },
+  ) {
+    const userId = user._id || user.created_by;
+    if (!userId) {
+      throw new BadRequestException('Invalid user ID');
+    }
+    return this.sellerService.updateOrdersStatus(userId, id, status.status);
   }
 }

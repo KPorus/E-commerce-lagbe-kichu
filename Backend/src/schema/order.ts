@@ -25,6 +25,7 @@ export class Orders extends Document {
         productId: { type: Types.ObjectId, ref: 'Products', required: true },
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
+        sellerID: { type: Types.ObjectId, ref: 'Users', required: true },
       },
     ],
     required: true,
@@ -33,6 +34,7 @@ export class Orders extends Document {
     productId: Types.ObjectId;
     quantity: number;
     price: number;
+    sellerID: Types.ObjectId;
   }[];
 
   @Prop({ type: Number, required: true })

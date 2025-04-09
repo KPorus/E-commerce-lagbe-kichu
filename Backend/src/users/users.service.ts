@@ -113,36 +113,45 @@ export class UsersService {
     session.startTransaction();
 
     try {
-      const productIds = createOrderDto.products.map((item) => item.productId);
+      const productIds = createOrderDto.products.map(
+        (item) => new Types.ObjectId(item.productId),
+      );
+
       const products = await this.productModel
-        .find({
-          _id: { $in: productIds },
-        })
+        .find({ _id: { $in: productIds } })
         .session(session);
 
-      // Even though below condition is not required, cause frontend will show only visiable product. It is a good practice to check if the products exist in the database.
       if (products.length !== createOrderDto.products.length) {
         throw new BadRequestException(
           'Some products in the order do not exist.',
         );
       }
 
+      const productMap = new Map();
+      products.forEach((product) => {
+        productMap.set(product._id.toString(), product);
+      });
+
+      const orderProducts = createOrderDto.products.map((item) => {
+        const product = productMap.get(item.productId.toString());
+        if (!product) {
+          throw new BadRequestException(`Product ${item.productId} not found`);
+        }
+
+        return {
+          productId: product._id,
+          quantity: item.quantity,
+          price: product.price,
+          sellerID: product.Owner,
+        };
+      });
+
       const bulkUpdateOps = createOrderDto.products.map((item) => ({
         updateOne: {
           filter: { _id: new Types.ObjectId(item.productId) },
-          update: [
-            {
-              $set: {
-                quantity: {
-                  $cond: {
-                    if: { $gte: ['$quantity', item.quantity] },
-                    then: { $subtract: ['$quantity', item.quantity] },
-                    else: '$quantity',
-                  },
-                },
-              },
-            },
-          ],
+          update: {
+            $inc: { quantity: -item.quantity },
+          },
           upsert: false,
         },
       }));
@@ -154,10 +163,16 @@ export class UsersService {
       if (bulkWriteResult.modifiedCount !== createOrderDto.products.length) {
         throw new BadRequestException('Not enough stock for some products.');
       }
+
+      const totalAmount = orderProducts.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0,
+      );
+
       const newOrder = new this.orderModel({
         user: new Types.ObjectId(userId),
-        products: createOrderDto.products,
-        totalAmount: createOrderDto.totalAmount,
+        products: orderProducts,
+        totalAmount,
         shippingAddress: createOrderDto.shippingAddress,
         paymentMethod: createOrderDto.paymentMethod,
         status: OrderStatus.PENDING,
@@ -180,6 +195,7 @@ export class UsersService {
       );
     }
   }
+
   async getOrderList(userId: string): Promise<ProductDetails[]> {
     try {
       const orders = await this.orderModel.aggregate([
