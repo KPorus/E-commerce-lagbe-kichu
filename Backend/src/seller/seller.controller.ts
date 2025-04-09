@@ -20,6 +20,8 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 // import { InventoryGuard } from 'src/auth/guard/inventory.guard';
 import { CombinGuard } from 'src/auth/guard/combin.guard';
+import { GetUser } from 'src/auth/decorator';
+import { Types } from 'mongoose';
 
 @Controller('seller')
 export class SellerController {
@@ -36,7 +38,11 @@ export class SellerController {
   async createProduct(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() body: CreateProductDto,
+    @GetUser() user,
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const owner = new Types.ObjectId(user.created_by || user._id);
+
     const existingProduct = await this.sellerService.getProductByTitle(
       body.title,
     );
@@ -65,13 +71,24 @@ export class SellerController {
       videoUrl = await this.cloudinaryService.uploadVideo(video);
     }
 
-    // console.log('Image URLs:', imageUrls);
-    // console.log('Video URL:', videoUrl);
-    return this.sellerService.addProduct({
+    let discountEndTime: Date | null = null;
+
+    if (body.specialDiscount && body.discountDurationInDays) {
+      const now = new Date();
+      discountEndTime = new Date(
+        now.getTime() + body.discountDurationInDays * 24 * 60 * 60 * 1000,
+      );
+    }
+
+    const productData = {
       ...body,
+      Owner: owner,
       images: imageUrls,
       previewVideo: videoUrl,
-    });
+      discountEndTime,
+    };
+
+    return this.sellerService.addProduct(productData);
   }
 
   // Edit a product ===============================

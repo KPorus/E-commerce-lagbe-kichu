@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import {
+  IsBoolean,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -44,13 +45,29 @@ export class CreateProductDto {
   @IsNumber()
   price: number;
 
-  // @IsArray()
-  // @IsString({ each: true })
-  // images: string[];
+  @IsBoolean()
+  @IsOptional()
+  bestArrival?: boolean;
 
-  // @IsString()
-  // @IsNotEmpty()
-  // previewVideo: string;
+  @IsNumber()
+  @IsOptional()
+  rating?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  newProduct?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  featured?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  specialDiscount?: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  discountDurationInDays?: number;
 
   @IsOptional()
   Owner?: Types.ObjectId;

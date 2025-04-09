@@ -28,7 +28,8 @@ export class UsersService {
             as: 'seller',
           },
         },
-        { $unwind: { path: '$seller', preserveNullAndEmptyArrays: true } },
+        { $unwind: '$seller' },
+        // { $unwind: { path: '$seller', preserveNullAndEmptyArrays: true } }, // document will be returned even if there are no seller data
         {
           $project: {
             _id: 1,

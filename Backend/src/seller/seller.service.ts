@@ -37,11 +37,8 @@ export class SellerService {
     try {
       // console.log(dto.Owner);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const ownerId = new Types.ObjectId(dto.Owner);
-      const product = new this.productModel({
-        ...dto,
-        Owner: ownerId,
-      });
+      // const ownerId = new Types.ObjectId(dto.Owner);
+      const product = new this.productModel(dto);
       await product.save();
       return product;
     } catch (error: unknown) {
