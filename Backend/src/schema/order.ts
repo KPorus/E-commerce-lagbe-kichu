@@ -9,6 +9,10 @@ export enum OrderStatus {
   OUT_FOR_DELIVERY = 'Out for Delivery',
   COMPLETED = 'Completed',
 }
+export enum PaymentMethod {
+  CASH = 'CASH ON DELEVERY',
+  BKASH = 'BKASH',
+}
 
 @NestSchema({ timestamps: true })
 export class Orders extends Document {
@@ -37,7 +41,12 @@ export class Orders extends Document {
   @Prop({ type: String, required: true })
   shippingAddress: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    enum: PaymentMethod,
+    default: PaymentMethod.CASH,
+    required: true,
+  })
   paymentMethod: string;
 
   @Prop({

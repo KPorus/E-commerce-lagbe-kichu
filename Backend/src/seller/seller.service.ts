@@ -35,9 +35,6 @@ export class SellerService {
 
   async addProduct(dto: any) {
     try {
-      // console.log(dto.Owner);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      // const ownerId = new Types.ObjectId(dto.Owner);
       const product = new this.productModel(dto);
       await product.save();
       return product;
