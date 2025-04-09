@@ -112,4 +112,56 @@ export class AuthService {
 
     return refreshToken;
   }
+
+  // Refresh Token API
+  async refreshToken(refreshToken: string, res: Response) {
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token is missing');
+    }
+
+    try {
+      const decoded = await this.jwt.verifyAsync(refreshToken, {
+        secret: this.config.get<string>('JWT_SECRET'),
+      });
+
+      const user = await this.userModel.findById(decoded.sub);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      // Generate new access token and refresh token
+      // const newAccessToken = await this.signToken(
+      //   user._id.toString(),
+      //   user.email,
+      //   user.role,
+      // );
+      // const newRefreshToken = await this.signRefreshToken(
+      //   user._id.toString(),
+      //   user.email,
+      //   user.role,
+      // );
+      const [accessToken, newRefreshToken] = await Promise.all([
+        this.signToken(user._id.toString(), user.email, user.role),
+        this.signRefreshToken(user._id.toString(), user.email, user.role),
+      ]);
+
+      // Set new refresh token in cookie
+      res.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      console.log('New refresh token set in cookie');
+
+      return res.json({
+        token: accessToken,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        handleMongoErrors(error, `Error refreshing token: ${error.message}`);
+      }
+      throw new BadRequestException('Invalid refresh token');
+    }
+  }
 }

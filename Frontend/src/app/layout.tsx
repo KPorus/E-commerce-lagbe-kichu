@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import StoreProvider from "./StoreProvider";
 
 const JosefinSans = localFont({
   src: [
@@ -23,7 +24,7 @@ const JosefinSans = localFont({
     {
       path: "./fonts/static/JosefinSans-SemiBold.ttf",
       weight: "600",
-    }
+    },
   ],
   variable: "--font-josefin-sans",
 });
@@ -40,7 +41,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${JosefinSans.variable} antialiased`}>{children}</body>
+      <body className={`${JosefinSans.variable} antialiased`}>
+        <StoreProvider>{children}</StoreProvider>
+      </body>
     </html>
   );
 }

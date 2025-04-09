@@ -1,7 +1,7 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ILoginBody, RegisterBodyDto } from './dto';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -14,5 +14,13 @@ export class AuthController {
   register(@Body() dto: RegisterBodyDto) {
     console.log(dto);
     return this.authService.register(dto);
+  }
+
+  @Post('/refresh')
+  refresh(@Req() req: Request, @Res() res: Response) {
+    const refreshToken = req.cookies['refreshToken'];
+    console.log(refreshToken);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return this.authService.refreshToken(refreshToken, res);
   }
 }
