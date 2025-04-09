@@ -170,6 +170,7 @@ export class SellerController {
     if (!id) {
       throw new BadRequestException('Invalid user ID');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return this.sellerService.getOrders(id);
   }
   @Patch('/update-orders-status/:id')
@@ -183,6 +184,7 @@ export class SellerController {
     if (!userId) {
       throw new BadRequestException('Invalid user ID');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return this.sellerService.updateOrdersStatus(userId, id, status.status);
   }
 }
