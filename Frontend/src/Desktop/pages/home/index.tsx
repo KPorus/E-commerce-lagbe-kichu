@@ -4,6 +4,7 @@ import Feature from "@/Desktop/components/feature";
 import LatestProducts from "@/Desktop/components/tabbed products";
 import OfferService from "@/Desktop/components/offer service";
 import NewsSection from "@/Desktop/components/news section";
+import Ad from "@/Desktop/components/ad";
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
       <LatestProducts/>
       <OfferService/>
       <NewsSection/>
+      <Ad/>
     </>
   );
 };
