@@ -13,7 +13,6 @@ import { CreateOrderDto } from './dto';
 import { GetUser } from 'src/auth/decorator';
 
 @Controller('users')
-@UseGuards(JwtGuard)
 export class UsersController {
   constructor(private userService: UsersService) {}
 
@@ -41,6 +40,7 @@ export class UsersController {
   }
 
   @Post('/checkout')
+  @UseGuards(JwtGuard)
   async checkout(@GetUser() user, @Body() createOrderDto: CreateOrderDto) {
     try {
       const order = await this.userService.createOrder(
@@ -54,6 +54,7 @@ export class UsersController {
     }
   }
   @Get('/view-order')
+  @UseGuards(JwtGuard)
   async getOrders(@GetUser() user) {
     try {
       const order = await this.userService.getOrderList(user._id);

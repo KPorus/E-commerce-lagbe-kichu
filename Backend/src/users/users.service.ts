@@ -68,26 +68,53 @@ export class UsersService {
   async getProduct(filters: {
     category?: string;
     name?: string;
+    newProduct?: boolean;
+    bestArrival?: boolean;
+    featured?: boolean;
+    specialDiscount?: boolean;
     minPrice?: number;
     maxPrice?: number;
   }): Promise<Products[]> {
     try {
       const matchStage: any = {};
 
-      if (filters.category) {
-        matchStage.category = filters.category;
+      // ✅ Clean category filter
+      if (filters.category && filters.category.trim() !== '') {
+        matchStage.category = filters.category.trim();
       }
 
-      if (filters.name) {
-        matchStage.title = { $regex: filters.name, $options: 'i' };
+      // ✅ Clean name filter with regex (case-insensitive)
+      if (filters.name && filters.name.trim() !== '') {
+        matchStage.title = { $regex: filters.name.trim(), $options: 'i' };
       }
 
-      if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
+      // ✅ Boolean flags
+      if (filters.newProduct !== undefined) {
+        matchStage.newProduct = filters.newProduct;
+      }
+
+      if (filters.bestArrival !== undefined) {
+        matchStage.bestArrival = filters.bestArrival;
+      }
+
+      if (filters.featured !== undefined) {
+        matchStage.featured = filters.featured;
+      }
+
+      if (filters.specialDiscount !== undefined) {
+        matchStage.specialDiscount = filters.specialDiscount;
+      }
+
+      // ✅ Price filter with proper checks
+      const hasMin = filters.minPrice !== undefined && filters.minPrice > 0;
+      const hasMax = filters.maxPrice !== undefined && filters.maxPrice > 0;
+
+      if (hasMin || hasMax) {
         matchStage.price = {};
-        if (filters.minPrice !== undefined) {
+        if (hasMin) {
           matchStage.price.$gte = filters.minPrice;
         }
-        if (filters.maxPrice !== undefined) {
+        if (hasMax) {
           matchStage.price.$lte = filters.maxPrice;
         }
       }
