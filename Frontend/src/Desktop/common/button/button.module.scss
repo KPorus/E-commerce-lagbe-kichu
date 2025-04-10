@@ -6,7 +6,7 @@
 }
 
 .primary {
-	@apply text-white focus:shadow-[0_0_0_.2rem_rgba(0,123,255,.25)];
+	@apply text-white;
 	transition: ease-in-out 0.3s;
 
 	&:hover {
@@ -26,11 +26,34 @@
 	}
 }
 
-.tertiary{
+.tertiary {
 	background-color: transparent;
 	padding: 0px 0px;
 	width: 3.5rem;
-	&:hover{
+
+	&:hover {
 		color: #FB2E86;
+	}
+}
+
+.addCart {
+	width: 8rem;
+	background-color: #F2F2F2;
+	padding: 8px 8px;
+
+	&:hover {
+		background-color: #FB2E86;
+		color: #F2F2F2;
+	}
+}
+.buyNow {
+	width: 8rem;
+	background-color: #FB2E86;
+	padding: 8px 8px;
+	color: #F2F2F2;
+	
+	&:hover {
+		background-color: #F2F2F2;
+		color: #151875;
 	}
 }

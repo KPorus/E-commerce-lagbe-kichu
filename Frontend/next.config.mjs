@@ -13,10 +13,18 @@ const nextConfig = {
     webpack: (config, { dev }) => {
         if (dev) {
             config.cache = {
-                type: 'memory', // use in-memory cache instead of filesystem
+                type: 'memory',
             };
         }
         return config;
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "**res.cloudinary.com**",
+            }
+        ],
     },
 };
 

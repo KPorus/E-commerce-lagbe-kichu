@@ -7,6 +7,8 @@ const buttonStyles = cva(styles.btnContainer, {
 			primary: styles.primary,
 			secondary: styles.secondary,
 			tertiary: styles.tertiary,
+			addCart: styles.addCart,
+			buyNow : styles.buyNow,
 		},
 		isSelected: {
 			true: styles.selected,
