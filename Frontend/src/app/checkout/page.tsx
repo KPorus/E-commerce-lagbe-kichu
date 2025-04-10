@@ -1,9 +1,9 @@
-import Footer from "@/Desktop/common/footer";
+import Checkout from "@/Desktop/pages/checkout";
 import Nav from "@/Desktop/common/navber";
-import HomePage from "@/Desktop/pages/home";
 import { isMobile } from "@/utils/isMobile";
 import { Box, Flex } from "@chakra-ui/react";
 import { headers } from "next/headers";
+import Footer from "@/Desktop/common/footer";
 
 export default function Home() {
   const userAgent = headers().get("user-agent") || "";
@@ -29,7 +29,7 @@ export default function Home() {
       ) : (
         <>
           <Nav />
-          <HomePage />
+          <Checkout />
           <Footer/>
         </>
       )}

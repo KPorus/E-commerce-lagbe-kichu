@@ -4,6 +4,7 @@ import React from "react";
 import Button from "../button";
 import { useAppDispatch } from "@/lib/hooks";
 import { setCartProducts } from "@/lib/features/cartSlice";
+import { toaster } from "@/components/ui/toaster";
 
 const ProductCardBtn = ({
   _id,
@@ -37,6 +38,11 @@ const ProductCardBtn = ({
         discount: discount || 0,
       })
     );
+    toaster.success({
+      type: "success", 
+      title: "Item Added!",
+      description: "The item has been successfully added to your cart.",
+    });
   };
 
   return (
