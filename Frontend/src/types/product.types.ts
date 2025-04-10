@@ -19,4 +19,28 @@ export interface Product {
   discountEndTime: Date | null;
 }
 
+export interface cartProduct {
+  _id: string;
+  title: string;
+  price: number;
+  quantity: number;
+  image: string;
+  Owner: string;
+  rating?: number;
+  description?: string;
+  discount?: number;
+}
+export interface IProductCard {
+  _id: string;
+  title: string;
+  price: number;
+  quantity: number;
+  images: string[];
+  Owner: string;
+  rating?: number;
+  description: string;
+  discount?: number;
+}
+
+
 

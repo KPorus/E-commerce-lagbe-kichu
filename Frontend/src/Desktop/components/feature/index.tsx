@@ -45,6 +45,7 @@ const Feature = () => {
             image={product.images[0]}
             title={product.title}
             description={product.description}
+            owner={product.Owner}
             price={product.price}
             discountPrice={product.discount}
             rating={product.rating}

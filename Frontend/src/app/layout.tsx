@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { Provider } from "@/components/ui/provider";
-import Nav from "@/Desktop/components/navber";
 const JosefinSans = localFont({
   src: [
     {
@@ -44,7 +43,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${JosefinSans.variable} antialiased`}>
         <Provider>
-          <Nav />
           <StoreProvider>{children}</StoreProvider>
         </Provider>
       </body>

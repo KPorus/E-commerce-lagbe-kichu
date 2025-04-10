@@ -4,6 +4,7 @@ import React from "react";
 import logo from "/public/Lagba Kichu1.png";
 import Link from "next/link";
 import Button from "@/Desktop/common/button";
+import Cartbtn from "./cartbtn";
 
 const Nav = () => {
   return (
@@ -13,6 +14,7 @@ const Nav = () => {
           <Image src={logo} alt="Logo" width={100} height={50} />
           <Link href={"/"}><Button text="Home" intent={'tertiary'}/></Link>
           <Link href={"/"}><Button text="Product" intent={'tertiary'}/></Link>
+          <Cartbtn/>
         </Flex>
         <Flex gap={5} alignItems={"center"}>
           <Link href={"/login"}><Button text="Login" intent={'secondary'}/></Link>

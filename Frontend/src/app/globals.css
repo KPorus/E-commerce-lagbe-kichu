@@ -25,3 +25,116 @@ body {
     text-wrap: balance;
   }
 }
+
+
+
+.loading-container {
+  @apply flex justify-center items-center h-screen flex-col font-bold font-sans;
+}
+
+@keyframes dot-typing {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25px);
+    -webkit-transform: translateY(-25px);
+    -moz-transform: translateY(-25px);
+    -ms-transform: translateY(-25px);
+    -o-transform: translateY(-25px);
+  }
+  60% {
+    transform: translateY(-20px);
+    -webkit-transform: translateY(-20px);
+    -moz-transform: translateY(-20px);
+    -ms-transform: translateY(-20px);
+    -o-transform: translateY(-20px);
+  }
+  70% {
+    transform: translateY(-15px);
+    -webkit-transform: translateY(-15px);
+    -moz-transform: translateY(-15px);
+    -ms-transform: translateY(-15px);
+    -o-transform: translateY(-15px);
+  }
+  80% {
+    transform: translateY(-10px);
+    -webkit-transform: translateY(-10px);
+    -moz-transform: translateY(-10px);
+    -ms-transform: translateY(-10px);
+    -o-transform: translateY(-10px);
+  }
+  90% {
+    transform: translateY(-5px);
+    -webkit-transform: translateY(-5px);
+    -moz-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    -o-transform: translateY(-5px);
+}
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-container div {
+  /* @apply sm-mobile:h-[10px] w-[10px]; */
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin: 0 5px;
+  animation: dot-typing 1.2s infinite ease-in-out;
+}
+
+.loading-container div:nth-child(1) {
+  background-color: #eb2127;
+  animation-delay: 0s;
+}
+.loading-container div:nth-child(2) {
+  background-color: #f69320;
+  animation-delay: 0.2s;
+}
+.loading-container div:nth-child(3) {
+  background-color: #1096d4;
+  animation-delay: 0.4s;
+}
+.loading-container div:nth-child(4) {
+  background-color: #fcee1f;
+  animation-delay: 0.6s;
+}
+.loading-container div:nth-child(5) {
+  background-color: #89c441;
+  animation-delay: 0.8s;
+}
+
+/* header box shadow */
+.show-header-shadow{
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* html selector css */
+
+html body a {
+  color: #333333;
+  -webkit-transition: all 0.6s;
+  transition: all 0.6s;
+}
+
+/* search list active class */
+.selected-searchlist{
+  background-color: #f0f0f0;
+}
+
+/* notification open close mobile */
+.notificationContainerOpen {
+  transform: translateX(0px);
+}
+
+.notificationContainerClose {
+  transform: translateX(100vw);
+}

@@ -1,4 +1,5 @@
 import Desktop from "@/Desktop";
+import Nav from "@/Desktop/components/navber";
 import { isMobile } from "@/utils/isMobile";
 import { Box, Flex } from "@chakra-ui/react";
 import { headers } from "next/headers";
@@ -25,7 +26,10 @@ export default function Home() {
           </Box>
         </Flex>
       ) : (
-        <Desktop/>
+        <>
+          <Nav />
+          <Desktop />
+        </>
       )}
     </main>
   );
