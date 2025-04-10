@@ -1,0 +1,36 @@
+.btnContainer {
+	background-color: #FB2E86;
+	padding: 16px 40px;
+	font-size: 16px;
+	width: 10rem;
+}
+
+.primary {
+	@apply text-white focus:shadow-[0_0_0_.2rem_rgba(0,123,255,.25)];
+	transition: ease-in-out 0.3s;
+
+	&:hover {
+		background-color: #F2F2F2;
+		color: #FB2E86;
+	}
+}
+
+.secondary {
+	background-color: #F2F2F2;
+	padding: 8px 8px;
+	transition: ease-in-out 0.3s;
+
+	&:hover {
+		background-color: #FB2E86;
+		color: #F2F2F2;
+	}
+}
+
+.tertiary{
+	background-color: transparent;
+	padding: 0px 0px;
+	width: 3.5rem;
+	&:hover{
+		color: #FB2E86;
+	}
+}

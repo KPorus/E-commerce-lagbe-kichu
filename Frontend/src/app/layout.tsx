@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
-
+import { Provider } from "@/components/ui/provider";
+import Nav from "@/Desktop/components/navber";
 const JosefinSans = localFont({
   src: [
     {
@@ -40,9 +41,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${JosefinSans.variable} antialiased`}>
-        <StoreProvider>{children}</StoreProvider>
+        <Provider>
+          <Nav />
+          <StoreProvider>{children}</StoreProvider>
+        </Provider>
       </body>
     </html>
   );

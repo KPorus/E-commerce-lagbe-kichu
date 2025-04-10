@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/app/lib/api/auth";
-import { useAppDispatch } from "@/app/lib/hooks";
-import { setCredentials } from "@/app/lib/features/authSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { loginUser } from "@/lib/api/auth";
+import { setCredentials } from "@/lib/features/authSlice";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

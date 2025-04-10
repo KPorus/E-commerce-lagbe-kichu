@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { registerUser } from "@/app/lib/api/auth";
-import { useAppDispatch } from "@/app/lib/hooks";
-import { setCredentials } from "@/app/lib/features/authSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { registerUser } from "@/lib/api/auth";
+import { setCredentials } from "@/lib/features/authSlice";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
