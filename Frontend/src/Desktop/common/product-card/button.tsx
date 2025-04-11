@@ -5,6 +5,7 @@ import Button from "../button";
 import { useAppDispatch } from "@/lib/hooks";
 import { setCartProducts } from "@/lib/features/cartSlice";
 import { toaster } from "@/components/ui/toaster";
+import Link from "next/link";
 
 const ProductCardBtn = ({
   _id,
@@ -21,9 +22,9 @@ const ProductCardBtn = ({
   image: string;
   title: string;
   price: number;
-  Owner:string,
-  specialDiscount:boolean;
-  discountEndTime?:Date|null
+  Owner: string;
+  specialDiscount: boolean;
+  discountEndTime?: Date | null;
   rating?: number;
   discount?: number;
 }) => {
@@ -45,7 +46,7 @@ const ProductCardBtn = ({
       })
     );
     toaster.success({
-      type: "success", 
+      type: "success",
       title: "Item Added!",
       description: "The item has been successfully added to your cart.",
     });
@@ -53,7 +54,9 @@ const ProductCardBtn = ({
 
   return (
     <Flex gap={2} mt={4}>
-      <Button intent="buyNow" text="Buy now" />
+      <Link href={"/checkout"}>
+        <Button intent="buyNow" text="Buy now" />
+      </Link>
       <Button intent="addCart" text="Add to cart" onClick={addCart} />
     </Flex>
   );
