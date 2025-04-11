@@ -2,53 +2,32 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "@/Desktop/common/product-card";
-import { getproducts } from "@/lib/api/product";
 import SectionTitle from "@/Desktop/common/section-title";
 import { IProductCard } from "@/types/product.types";
 import { Button, Container, Flex, Grid } from "@chakra-ui/react";
 import LoadingPage from "@/app/loading";
+import { useSearchProductsMutation } from "@/lib/api/apiSlice";
 
 const tabs = [
-  { label: "New Arrival", value: "new" },
-  { label: "Best Seller", value: "best" },
+  { label: "New Arrival", value: "newProduct" },
+  { label: "Best Seller", value: "bestArrival" },
   { label: "Featured", value: "featured" },
-  { label: "Special Offer", value: "offer" },
+  { label: "Special Offer", value: "specialDiscount" },
 ];
 
 const LatestProducts = () => {
-  const [activeTab, setActiveTab] = useState("new");
+  const [activeTab, setActiveTab] = useState(tabs[0].value);
   const [products, setProducts] = useState<IProductCard[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [searchProducts, { isLoading }] = useSearchProductsMutation();
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
-      let queryParams = {};
-
-      switch (activeTab) {
-        case "new":
-          queryParams = { newProduct: true };
-          break;
-        case "best":
-          queryParams = { bestArrival: true };
-          break;
-        case "featured":
-          queryParams = { featured: true };
-          break;
-        case "offer":
-          queryParams = { specialDiscount: true };
-          break;
-        default:
-          break;
-      }
-
       try {
-        const data = await getproducts(queryParams);
+        const data = await searchProducts({ [activeTab]: true }).unwrap();
         setProducts(data.slice(0, 8));
       } catch (error) {
         console.error("Failed to fetch products:", error);
       }
-      setLoading(false);
     };
 
     fetchProducts();
@@ -66,7 +45,6 @@ const LatestProducts = () => {
             fontWeight="medium"
             pb={1}
             color={activeTab === tab.value ? "pink.500" : "gray.600"}
-            // borderBottom={activeTab === tab.value ? "2px solid" : "none"}
             borderColor={activeTab === tab.value ? "pink.500" : "transparent"}
           >
             {tab.label}
@@ -74,27 +52,25 @@ const LatestProducts = () => {
         ))}
       </Flex>
 
-      {loading ? (
+      {isLoading ? (
         <LoadingPage />
       ) : (
-        <Grid templateColumns="repeat(4, 1fr)" gap="4">
-          {products.map((product) => {
-            return (
-              <ProductCard
-                key={product._id}
-                productId={product._id}
-                image={product.images[0]}
-                title={product.title}
-                owner={product.Owner}
-                description={product.description}
-                specialDiscount={product.specialDiscount}
-                discountEndTime={product.discountEndTime}
-                price={product.price}
-                discountPrice={product.discount}
-                rating={product.rating}
-              />
-            );
-          })}
+        <Grid templateColumns="repeat(4, 1fr)" gap={4}>
+          {products.map((product) => (
+            <ProductCard
+              key={product._id}
+              productId={product._id}
+              image={product.images[0]}
+              title={product.title}
+              owner={product.Owner}
+              description={product.description}
+              specialDiscount={product.specialDiscount}
+              discountEndTime={product.discountEndTime}
+              price={product.price}
+              discountPrice={product.discount}
+              rating={product.rating}
+            />
+          ))}
         </Grid>
       )}
     </Container>

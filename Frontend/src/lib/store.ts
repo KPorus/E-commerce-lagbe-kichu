@@ -1,17 +1,18 @@
-// lib/store.ts
-
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/authSlice";
-// import featuredProductsReducer from "./features/productSlice";
+// import featuredProductsReducer from "./features/productSlice"; // Uncomment if you have this reducer
 import cartProductsReducer from "./features/cartSlice";
+import { apiSlice } from "./api/apiSlice"; // Import your apiSlice
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: authReducer,
-      // featuredProducts: featuredProductsReducer,
       cart: cartProductsReducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(apiSlice.middleware),
   });
 };
 

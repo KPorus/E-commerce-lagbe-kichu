@@ -1,6 +1,6 @@
 "use client";
 import { Toaster, toaster } from "@/components/ui/toaster";
-import { checkout } from "@/lib/api/order";
+import { useCheckoutMutation } from "@/lib/api/apiSlice";
 import {
   addQuantity,
   decreaseQuantity,
@@ -21,7 +21,7 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Cart = () => {
   const router = useRouter();
@@ -40,47 +40,43 @@ const Cart = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.products);
   const token = useAppSelector((state) => state.auth.token);
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const [checkout, { isLoading }] = useCheckoutMutation();
 
-  if (!isMounted) return null;
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
   const shipping = 16;
   const total = subtotal + shipping;
-
   const handleCheckout = async () => {
     if (!token) {
       toaster.error({
         title: "Login required",
         description: "Please login to proceed with checkout.",
       });
-      return router.push('/login');
+      return router.push("/login");
     }
-  
+
     const products = cartItems.map((item) => ({
       productId: item._id,
       quantity: item.quantity,
       price: item.price,
     }));
-  
+
     const requestBody = {
       products,
       totalAmount: total,
       shippingAddress: `${address.country}, ${address.city}, ${address.postalCode}`,
       paymentMethod: value === "CASH" ? "CASH ON DELEVERY" : "BKASH",
     };
-  
+
     try {
-      const res = await checkout(requestBody, token);
+      const res = await checkout({ body: requestBody, token }).unwrap();
       console.log(res);
       toaster.success({
         title: "Order Placed!",
-        description: `${res.message}` || "Your order has been submitted successfully."
+        description:
+          `${res.message}` || "Your order has been submitted successfully.",
       });
       dispatch(resetItem());
     } catch (err) {
@@ -91,7 +87,7 @@ const Cart = () => {
       console.error(err);
     }
   };
-  
+
   return (
     <Container maxW={"breakpoint-xl"} p={6}>
       <Toaster />
@@ -117,9 +113,15 @@ const Cart = () => {
                 </Table.Row>
               </Table.Header>
 
-              {cartItems.length > 0 ? (
-                <Table.Body p={4}>
-                  {cartItems.map((item, idx) => (
+              <Table.Body>
+                {isLoading ? (
+                  <Table.Row>
+                    <Table.Cell colSpan={4} textAlign="center">
+                      <Text>Loading...</Text>
+                    </Table.Cell>
+                  </Table.Row>
+                ) : cartItems.length > 0 ? (
+                  cartItems.map((item, idx) => (
                     <Table.Row key={idx} bg="white">
                       <Table.Cell>
                         <Flex align="center">
@@ -127,54 +129,41 @@ const Cart = () => {
                             boxSize="60px"
                             src={item.image}
                             alt={item.title}
-                            mr={3}
-                            rounded="md"
                           />
-                          <Box>
-                            <Text fontWeight="medium">{item.title}</Text>
-                            <Text fontSize="sm" color="gray.500">
-                              Rating: {item.rating}
-                            </Text>
-                          </Box>
+                          <Text ml={2}>{item.title}</Text>
                         </Flex>
                       </Table.Cell>
-                      <Table.Cell>BDT {item.price}</Table.Cell>
-                      <Table.Cell>
-                        <Flex align="center" gap={2}>
+                      <Table.Cell textAlign="center">${item.price}</Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <Flex align="center" justify="center">
                           <Button
                             size="sm"
                             onClick={() => dispatch(decreaseQuantity(item._id))}
-                            colorScheme="gray"
                           >
                             -
                           </Button>
-                          <Input
-                            type="number"
-                            value={item.quantity}
-                            width="60px"
-                            textAlign="center"
-                            readOnly
-                          />
+                          <Text mx={2}>{item.quantity}</Text>
                           <Button
                             size="sm"
                             onClick={() => dispatch(addQuantity(item._id))}
-                            colorScheme="gray"
                           >
                             +
                           </Button>
                         </Flex>
                       </Table.Cell>
-                      <Table.Cell>BDT {item.price * item.quantity}</Table.Cell>
+                      <Table.Cell textAlign="center">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </Table.Cell>
                     </Table.Row>
-                  ))}
-                </Table.Body>
-              ) : (
-                <Table.Body>
-                  <Text mt={2} ml={4} fontWeight={"bold"}>
-                    No product add to cart
-                  </Text>
-                </Table.Body>
-              )}
+                  ))
+                ) : (
+                  <Table.Row bg="transparent">
+                    <Table.Cell colSpan={4} textAlign="center">
+                      <Text textStyle={'lg'} fontWeight={'medium'}>No items in the cart</Text>
+                    </Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
             </Table.Root>
           </Table.ScrollArea>
           <Flex mt={4} gap={4}>
@@ -270,7 +259,8 @@ const Cart = () => {
                 px={8}
                 color={isAddressValid ? "#F2F2F2" : "gray.500"}
                 onClick={handleCheckout}
-                disabled={!isAddressValid}
+                disabled={!isAddressValid || isLoading}
+                loading={isLoading}
                 _hover={{ bg: isAddressValid ? "#e02777" : "gray.300" }}
               >
                 Proceed To Checkout

@@ -3,8 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
 import { setCredentials } from "@/lib/features/authSlice";
-import { Toaster, toaster } from "@/components/ui/toaster";
-import { useLoginUserMutation } from "@/lib/api/apiSlice";
+import { useRegisterUserMutation } from "@/lib/api/apiSlice";
 import {
   Button,
   Container,
@@ -14,46 +13,56 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
+const Register = () => {
+  const [username, setUsername] = useState("");
+  const [value, setValue] = useState<string>("USER");
 
-const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
 
-  // Use the useLoginUserMutation hook from the apiSlice
-  const [loginUser, { isLoading }] = useLoginUserMutation();
-
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setValue(event.target.value);
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await loginUser({ email, pass }).unwrap();
-      // console.log(data);
-      dispatch(setCredentials({ user: data.data, token: data.token }));
-      router.push("/");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
+      const data = await registerUser({
+        username,
+        email,
+        pass,
+        role: value,
+      }).unwrap();
+
+      dispatch(setCredentials({ user: data, token: null }));
+      router.push("/login");
+    } catch (err: unknown) {
       console.log(err);
-      toaster.error({
-        title: "Login failed",
-        description:
-          err?.message || "Login failed. Please check your email or password.",
-      });
-      setError("Login failed");
+      setError("Registration failed");
     }
   };
 
   return (
     <Container maxW="sm" mt={10}>
-      <Toaster/>
       {error && <Text color="red.500">{error}</Text>}
       <VStack>
         <Text fontSize="2xl" fontWeight="bold">
-          Login
+          Register
         </Text>
         <form onSubmit={handleSubmit} style={{ width: "100%" }}>
           <Stack>
+            <Input
+              borderWidth="3px"
+              borderColor="gray.600"
+              p={4}
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
             <Input
               borderWidth="3px"
               borderColor="gray.600"
@@ -73,7 +82,30 @@ const Login = () => {
               value={pass}
               onChange={(e) => setPass(e.target.value)}
             />
-            <Link href={"/register"} className="font-medium">Create a Account</Link>
+            <label>
+              <input
+                type="radio"
+                name="options"
+                value="USER"
+                checked={value === "USER"}
+                onChange={handleChange}
+              />
+              USER
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="options"
+                value="SELLER"
+                checked={value === "SELLER"}
+                onChange={handleChange}
+              />
+              SELLER
+            </label>
+            <Link href={"/login"} className="font-medium">
+              Already have an account
+            </Link>
           </Stack>
           <Button
             type="submit"
@@ -84,10 +116,10 @@ const Login = () => {
             color={"#F2F2F2"}
             width="full"
             loading={isLoading}
-            loadingText="Logging in..."
+            loadingText="Creating account in..."
             mt={4}
           >
-            Login
+            Register
           </Button>
         </form>
       </VStack>
@@ -95,4 +127,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

@@ -1,40 +1,38 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/hooks";
-import { registerUser } from "@/lib/api/auth";
-import { setCredentials } from "@/lib/features/authSlice";
+import Footer from "@/Desktop/common/footer";
+import Nav from "@/Desktop/common/navber";
+import Register from "@/Desktop/pages/register";
+import { isMobile } from "@/utils/isMobile";
+import { Box, Flex } from "@chakra-ui/react";
+import { headers } from "next/headers";
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const data = await registerUser(username, email, pass,"USER");
-      dispatch(setCredentials({ user: data, token: null }));
-      router.push("/login");
-    } catch (err: unknown) {
-        console.log(err);
-      setError("Registration failed");
-    }
-  };
-
+  const userAgent = headers().get("user-agent") || "";
+  const isMobileDevice = isMobile(userAgent);
   return (
-    <div className="max-w-sm mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
-        <input type="text" placeholder="Username" className="w-full p-2 border rounded" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input type="email" placeholder="Email" className="w-full p-2 border rounded" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" className="w-full p-2 border rounded" value={pass} onChange={(e) => setPass(e.target.value)} />
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">Register</button>
-      </form>
-    </div>
+    <main>
+      {isMobileDevice ? (
+        <Flex
+          alignItems={"center"}
+          justifyContent="center"
+          w={"100vw"}
+          h="100vh"
+        >
+          <Box
+            backgroundColor={"green.500"}
+            padding="20px"
+            borderRadius="8px"
+            textAlign="center"
+          >
+            <p className="font-semibold">Mobile view is not avaiable</p>
+          </Box>
+        </Flex>
+      ) : (
+        <>
+          <Nav />
+          <Register />
+          <Footer />
+        </>
+      )}
+    </main>
   );
 }
