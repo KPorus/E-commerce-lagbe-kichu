@@ -5,6 +5,7 @@ import Image from "next/image";
 import heroimageone from "/public/hero1.png";
 import heroimagetwo from "/public/sofa.png";
 import Button from "@/Desktop/common/button";
+import Link from "next/link";
 const Hero = () => {
   return (
     <Flex background={"#F2F0FF"} fontWeight={"semibold"}>
@@ -28,9 +29,9 @@ const Hero = () => {
           Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida
           arcu ac.
         </Text>
-        <div className="mt-14">
+        <Link href={'/product'} className="mt-14">
           <Button text="Shop Now" />
-        </div>
+        </Link>
       </Stack>
 
       <Image

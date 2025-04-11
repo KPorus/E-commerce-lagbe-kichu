@@ -18,7 +18,7 @@ const RouteBtn = () => {
           <Link href={"/"}>
             <Button text="Home" intent={"tertiary"} />
           </Link>
-          <Link href={"/"}>
+          <Link href={"/product"}>
             <Button text="Product" intent={"tertiary"} />
           </Link>
           <Link href={"/order"}>
@@ -30,7 +30,7 @@ const RouteBtn = () => {
           <Link href={"/"}>
             <Button text="Home" intent={"tertiary"} />
           </Link>
-          <Link href={"/"}>
+          <Link href={"/product"}>
             <Button text="Product" intent={"tertiary"} />
           </Link>
         </>

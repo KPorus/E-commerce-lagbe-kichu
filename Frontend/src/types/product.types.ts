@@ -48,3 +48,13 @@ export interface IProductCard {
 
 
 
+export interface GetProductsParams {
+  category?: string;
+  name?: string;
+  newProduct?: boolean;
+  bestArrival?: boolean;
+  featured?: boolean;
+  specialDiscount?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+}
