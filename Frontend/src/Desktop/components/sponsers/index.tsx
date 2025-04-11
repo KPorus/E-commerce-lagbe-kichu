@@ -2,7 +2,7 @@ import { Container } from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
 import ad from "/public/ad.png";
-const Ad = () => {
+const Sponser = () => {
   return (
     <Container
       maxW={"breakpoint-xl"}
@@ -24,4 +24,4 @@ const Ad = () => {
   );
 };
 
-export default Ad;
+export default Sponser;

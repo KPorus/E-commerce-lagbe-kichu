@@ -26,6 +26,8 @@ export interface cartProduct {
   quantity: number;
   image: string;
   Owner: string;
+  specialDiscount?: boolean;
+  discountEndTime?: Date | null;
   rating?: number;
   description?: string;
   discount?: number;
@@ -40,6 +42,8 @@ export interface IProductCard {
   rating?: number;
   description: string;
   discount?: number;
+  specialDiscount: boolean;
+  discountEndTime?: Date | null;
 }
 
 

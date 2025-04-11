@@ -75,7 +75,7 @@ const LatestProducts = () => {
       </Flex>
 
       {loading ? (
-        <LoadingPage/>
+        <LoadingPage />
       ) : (
         <Grid templateColumns="repeat(4, 1fr)" gap="4">
           {products.map((product) => {
@@ -87,6 +87,8 @@ const LatestProducts = () => {
                 title={product.title}
                 owner={product.Owner}
                 description={product.description}
+                specialDiscount={product.specialDiscount}
+                discountEndTime={product.discountEndTime}
                 price={product.price}
                 discountPrice={product.discount}
                 rating={product.rating}

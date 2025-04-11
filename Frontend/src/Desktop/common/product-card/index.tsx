@@ -11,16 +11,20 @@ const ProductCard = ({
   owner,
   price,
   discountPrice,
+  specialDiscount,
+  discountEndTime,
   rating,
 }: {
   productId: string;
   image: string;
   title: string;
-  owner:string,
+  owner: string;
   description: string;
   price: number;
   discountPrice?: number;
   rating?: number;
+  specialDiscount: boolean;
+  discountEndTime?: Date | null;
 }) => {
   console.log(image);
   return (
@@ -31,7 +35,7 @@ const ProductCard = ({
       alignItems={"center"}
       mb={8}
     >
-      <Box w={'240px'} h={'236px'} position="relative">
+      <Box w={"240px"} h={"236px"} position="relative">
         <Image src={image} alt={title} layout="fill" />
       </Box>
       <Text
@@ -57,6 +61,8 @@ const ProductCard = ({
         title={title}
         Owner={owner}
         price={price}
+        specialDiscount={specialDiscount}
+        discountEndTime={discountEndTime}
         rating={rating}
         discount={discountPrice}
       />

@@ -1,34 +1,31 @@
 "use client";
 import { useState, useEffect } from "react";
 import { getproducts } from "@/lib/api/product";
-import { setFeaturedProducts } from "@/lib/features/productSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { RootState } from "@/lib/store";
 import { Container, Flex } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 import SectionTitle from "@/Desktop/common/section-title";
 import ProductCard from "@/Desktop/common/product-card";
+import { IProductCard } from "@/types/product.types";
+import LoadingPage from "@/app/loading";
 
 const Feature = () => {
   const dispatch = useAppDispatch();
-  //   const [loading, setLoading] = useState(true); // Add loading state
-
-  const featuredProducts = useSelector(
-    (state: RootState) => state.featuredProducts.products || []
-  );
-
+   const [products, setProducts] = useState<IProductCard[]>([]);
+    const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
+        setLoading(true)
         const data = await getproducts({ featured: true });
         if (data && Array.isArray(data)) {
-          dispatch(setFeaturedProducts(data.slice(0, 4)));
+          setProducts(data.slice(0, 4));
         } else {
           console.error("No products found in the response");
         }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
+      setLoading(false)
     };
     fetchFeaturedProducts();
   }, [dispatch]);
@@ -36,9 +33,11 @@ const Feature = () => {
   return (
     <Container maxW="breakpoint-xl">
       <SectionTitle title="Featured Products" />
-      {featuredProducts.length > 0 ? (
+      {loading ? (
+        <LoadingPage />
+      ) :products.length > 0 ? (
         <Flex gap={8}>
-          {featuredProducts.map((product) => (
+          {products.map((product) => (
             <ProductCard
             key={product._id}
             productId={product._id}
@@ -47,6 +46,8 @@ const Feature = () => {
             description={product.description}
             owner={product.Owner}
             price={product.price}
+            specialDiscount={product.specialDiscount}
+            discountEndTime={product.discountEndTime}
             discountPrice={product.discount}
             rating={product.rating}
           />

@@ -13,6 +13,8 @@ const ProductCardBtn = ({
   price,
   rating,
   Owner,
+  specialDiscount,
+  discountEndTime,
   discount,
 }: {
   _id: string;
@@ -20,6 +22,8 @@ const ProductCardBtn = ({
   title: string;
   price: number;
   Owner:string,
+  specialDiscount:boolean;
+  discountEndTime?:Date|null
   rating?: number;
   discount?: number;
 }) => {
@@ -35,6 +39,8 @@ const ProductCardBtn = ({
         price,
         Owner,
         rating,
+        specialDiscount,
+        discountEndTime,
         discount: discount || 0,
       })
     );
