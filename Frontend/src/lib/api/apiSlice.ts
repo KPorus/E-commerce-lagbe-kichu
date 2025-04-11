@@ -49,6 +49,16 @@ export const apiSlice = createApi({
       }),
     }),
 
+    productDetails: builder.query({
+      query: ({ token, id }) => ({
+        url: `users/get-product/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
+
     // Checkout (handles the checkout process)
     checkout: builder.mutation({
       query: ({ body, token }) => ({
@@ -80,6 +90,7 @@ export const {
   useRefreshTokenQuery,
   useGetCurrentUserQuery,
   useSearchProductsMutation,
+  useProductDetailsQuery,
   useCheckoutMutation,
-  useGetOrderListQuery
+  useGetOrderListQuery,
 } = apiSlice;

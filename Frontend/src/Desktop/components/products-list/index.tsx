@@ -5,14 +5,8 @@ import LoadingPage from "@/app/loading";
 import ProductCard from "@/Desktop/common/product-card";
 import { useSearchProductsMutation } from "@/lib/api/apiSlice";
 import { GetProductsParams, IProductCard } from "@/types/product.types";
-import {
-  Container,
-  Text,
-  Box,
-  Input,
-  Flex,
-  Grid,
-} from "@chakra-ui/react";
+import { Container, Text, Box, Input, Flex, Grid } from "@chakra-ui/react";
+import Link from "next/link";
 
 const ProductList = () => {
   const [searchProducts, { isLoading, data, error }] =
@@ -87,7 +81,12 @@ const ProductList = () => {
               id="category-select"
               value={category}
               onChange={handleCategoryChange}
-              style={{ width: "100%", background: "white",padding:'0.8rem', border:'2px solid gray' }}
+              style={{
+                width: "100%",
+                background: "white",
+                padding: "0.8rem",
+                border: "2px solid gray",
+              }}
             >
               <option value="">Select category</option>
               {categories.map((categoryItem) => (
@@ -147,19 +146,21 @@ const ProductList = () => {
         <Grid templateColumns="repeat(4, 1fr)" gap={4}>
           {data && data.length > 0 ? (
             data.map((product: IProductCard) => (
-              <ProductCard
-                key={product._id}
-                productId={product._id}
-                image={product.images[0]}
-                title={product.title}
-                owner={product.Owner}
-                description={product.description}
-                specialDiscount={product.specialDiscount}
-                discountEndTime={product.discountEndTime}
-                price={product.price}
-                discountPrice={product.discount}
-                rating={product.rating}
-              />
+              <Link key={product._id} href={`/product/${product._id}`}>
+                <ProductCard
+                  
+                  productId={product._id}
+                  image={product.images[0]}
+                  title={product.title}
+                  owner={product.Owner}
+                  description={product.description}
+                  specialDiscount={product.specialDiscount}
+                  discountEndTime={product.discountEndTime}
+                  price={product.price}
+                  discountPrice={product.discount}
+                  rating={product.rating}
+                />
+              </Link>
             ))
           ) : (
             <Text>No products found.</Text>
