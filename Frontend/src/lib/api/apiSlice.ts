@@ -12,7 +12,7 @@ export const apiSlice = createApi({
         url: "/auth/login",
         method: "POST",
         body: { email, pass },
-        credentials: "include", // Allows cookies (for refresh token)
+        credentials: "include",
       }),
     }),
 
@@ -59,7 +59,18 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${token}`,
         },
       }),
-    }),    
+    }),
+
+    getOrderList: builder.query({
+      query: ({ page = 1, limit = 10, token }) => ({
+        url: `/users/view-order`,
+        method: "GET",
+        params: { page, limit },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -70,4 +81,5 @@ export const {
   useGetCurrentUserQuery,
   useSearchProductsMutation,
   useCheckoutMutation,
+  useGetOrderListQuery
 } = apiSlice;

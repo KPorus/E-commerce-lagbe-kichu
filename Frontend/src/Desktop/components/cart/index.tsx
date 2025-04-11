@@ -92,7 +92,7 @@ const Cart = () => {
     <Container maxW={"breakpoint-xl"} p={6}>
       <Toaster />
       <Grid templateColumns="repeat(2, 1fr)" gap="4">
-        {/* 🛒 Left: Cart Table */}
+        {/* Left: Cart Table */}
         <Box overflowX="auto">
           <Table.ScrollArea borderWidth="1px" rounded="md" height="360px">
             <Table.Root interactive>
@@ -167,9 +167,7 @@ const Cart = () => {
             </Table.Root>
           </Table.ScrollArea>
           <Flex mt={4} gap={4}>
-            {/* <Button colorScheme="pink">Update Cart</Button> */}
             <Button
-              colorScheme="pink"
               background={"#F2F2F2"}
               py={8}
               px={8}
@@ -181,9 +179,8 @@ const Cart = () => {
           </Flex>
         </Box>
 
-        {/* ✅ Right: Cart Totals + Shipping */}
+        {/* Right: Cart Totals + Shipping */}
         <Stack>
-          {/* Cart Totals */}
           <Box borderWidth="1px" borderRadius="lg">
             <Heading size="md" p={4} background={"#FB2E86"} color={"#F2F2F2"}>
               Cart Totals

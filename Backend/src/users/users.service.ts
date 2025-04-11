@@ -253,6 +253,7 @@ export class UsersService {
             totalPrice: {
               $multiply: ['$products.quantity', '$productDetails.price'],
             },
+            status: '$status',
           },
         },
         {
@@ -263,6 +264,7 @@ export class UsersService {
             productTitle: { $first: '$productTitle' },
             productPrice: { $first: '$productPrice' },
             productImages: { $first: '$productImages' },
+            status: { $first: '$status' },
           },
         },
         {
@@ -273,6 +275,7 @@ export class UsersService {
             productTitle: 1,
             productPrice: 1,
             productImages: 1,
+            status: 1,
           },
         },
         { $skip: skip },
