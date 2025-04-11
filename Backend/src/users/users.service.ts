@@ -223,9 +223,15 @@ export class UsersService {
     }
   }
 
-  async getOrderList(userId: string): Promise<ProductDetails[]> {
+  async getOrderList(
+    userId: string,
+    page = 1,
+    limit = 10,
+  ): Promise<{ orders: ProductDetails[]; total: number }> {
     try {
-      const orders = await this.orderModel.aggregate([
+      const skip = (page - 1) * limit;
+
+      const ordersAggregation = await this.orderModel.aggregate([
         { $match: { user: new Types.ObjectId(userId) } },
         { $unwind: '$products' },
         {
@@ -269,9 +275,30 @@ export class UsersService {
             productImages: 1,
           },
         },
+        { $skip: skip },
+        { $limit: limit },
       ]);
 
-      return orders as ProductDetails[];
+      // To get total count of distinct productIds
+      const totalCountAggregation = await this.orderModel.aggregate([
+        { $match: { user: new Types.ObjectId(userId) } },
+        { $unwind: '$products' },
+        {
+          $group: {
+            _id: '$products.productId',
+          },
+        },
+        {
+          $count: 'total',
+        },
+      ]);
+
+      const total = totalCountAggregation[0]?.total || 0;
+
+      return {
+        orders: ordersAggregation as ProductDetails[],
+        total,
+      };
     } catch (error) {
       if (error instanceof Error) {
         handleMongoErrors(error);

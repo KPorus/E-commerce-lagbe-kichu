@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -55,9 +56,17 @@ export class UsersController {
   }
   @Get('/view-order')
   @UseGuards(JwtGuard)
-  async getOrders(@GetUser() user) {
+  async getOrders(
+    @GetUser() user,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
     try {
-      const order = await this.userService.getOrderList(user._id);
+      const order = await this.userService.getOrderList(
+        user._id,
+        Number(page),
+        Number(limit),
+      );
       return order;
     } catch (error) {
       throw new BadRequestException('Error during checkout: ' + error.message);
