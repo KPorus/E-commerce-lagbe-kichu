@@ -26,7 +26,7 @@ const ProductCard = ({
   specialDiscount: boolean;
   discountEndTime?: Date | null;
 }) => {
-  console.log(image);
+  // console.log(image);
   return (
     <Box
       key={productId}

@@ -1,4 +1,6 @@
 "use client";
+import { Toaster, toaster } from "@/components/ui/toaster";
+import { checkout } from "@/lib/api/order";
 import {
   addQuantity,
   decreaseQuantity,
@@ -18,11 +20,26 @@ import {
   Grid,
   Container,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Cart = () => {
+  const router = useRouter();
+  const [address, setAddress] = useState({
+    country: "",
+    city: "",
+    postalCode: "",
+  });
+
+  const isAddressValid = address.country && address.city && address.postalCode;
+  const [value, setValue] = useState<string>("CASH");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.products);
+  const token = useAppSelector((state) => state.auth.token);
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
@@ -36,8 +53,48 @@ const Cart = () => {
   const shipping = 16;
   const total = subtotal + shipping;
 
+  const handleCheckout = async () => {
+    if (!token) {
+      toaster.error({
+        title: "Login required",
+        description: "Please login to proceed with checkout.",
+      });
+      return router.push('/login');
+    }
+  
+    const products = cartItems.map((item) => ({
+      productId: item._id,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+  
+    const requestBody = {
+      products,
+      totalAmount: total,
+      shippingAddress: `${address.country}, ${address.city}, ${address.postalCode}`,
+      paymentMethod: value === "CASH" ? "CASH ON DELEVERY" : "BKASH",
+    };
+  
+    try {
+      const res = await checkout(requestBody, token);
+      console.log(res);
+      toaster.success({
+        title: "Order Placed!",
+        description: `${res.message}` || "Your order has been submitted successfully."
+      });
+      dispatch(resetItem());
+    } catch (err) {
+      toaster.error({
+        title: "Checkout failed",
+        description: "Please try again later.",
+      });
+      console.error(err);
+    }
+  };
+  
   return (
     <Container maxW={"breakpoint-xl"} p={6}>
+      <Toaster />
       <Grid templateColumns="repeat(2, 1fr)" gap="4">
         {/* 🛒 Left: Cart Table */}
         <Box overflowX="auto">
@@ -156,9 +213,51 @@ const Cart = () => {
                 <Text fontWeight="bold">BDT {total}</Text>
               </Flex>
               <Stack>
-                <Input placeholder="Country" />
-                <Input placeholder="City, Area" />
-                <Input placeholder="Postal Code" />
+                <Input
+                  placeholder="Country"
+                  required
+                  value={address.country}
+                  onChange={(e) =>
+                    setAddress({ ...address, country: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder="City, Area"
+                  value={address.city}
+                  required
+                  onChange={(e) =>
+                    setAddress({ ...address, city: e.target.value })
+                  }
+                />
+                <Input
+                  placeholder="Postal Code"
+                  value={address.postalCode}
+                  required
+                  onChange={(e) =>
+                    setAddress({ ...address, postalCode: e.target.value })
+                  }
+                />
+                <label>
+                  <input
+                    type="radio"
+                    name="options"
+                    value="CASH"
+                    checked={value === "CASH"}
+                    onChange={handleChange}
+                  />
+                  CASH
+                </label>
+
+                <label>
+                  <input
+                    type="radio"
+                    name="options"
+                    value="BKASH"
+                    checked={value === "BKASH"}
+                    onChange={handleChange}
+                  />
+                  BKASH
+                </label>
               </Stack>
               <Text fontSize="sm" color="gray.500" mt={2}>
                 Shipping & taxes calculated at checkout
@@ -166,10 +265,13 @@ const Cart = () => {
               <Button
                 w="full"
                 mt={4}
-                background={"#FB2E86"}
+                background={isAddressValid ? "#FB2E86" : "gray.300"}
                 py={8}
                 px={8}
-                color={"#F2F2F2"}
+                color={isAddressValid ? "#F2F2F2" : "gray.500"}
+                onClick={handleCheckout}
+                disabled={!isAddressValid}
+                _hover={{ bg: isAddressValid ? "#e02777" : "gray.300" }}
               >
                 Proceed To Checkout
               </Button>

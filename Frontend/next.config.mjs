@@ -5,12 +5,15 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig = {
-    output: 'standalone',
+    // output: 'standalone',
     reactStrictMode: true,
     sassOptions: {
         includePaths: [path.join(__dirname, './src')],
     },
     webpack: (config, { dev }) => {
+        config.cache = {
+            type: 'memory',
+        };
         if (dev) {
             config.cache = {
                 type: 'memory',

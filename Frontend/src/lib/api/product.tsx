@@ -15,6 +15,6 @@ export const getproducts = async (filters: GetProductsParams) => {
     `${process.env.NEXT_PUBLIC_API_URL}/users/search-product`,
     filters
   );
-  console.log(res);
+  // console.log(res);
   return res.data;
 };

@@ -4,7 +4,7 @@ import React from "react";
 import Button from "../button";
 import { useAppDispatch } from "@/lib/hooks";
 import { setCartProducts } from "@/lib/features/cartSlice";
-import { toaster } from "@/components/ui/toaster";
+import { Toaster, toaster } from "@/components/ui/toaster"
 import Link from "next/link";
 
 const ProductCardBtn = ({
@@ -48,14 +48,15 @@ const ProductCardBtn = ({
     toaster.success({
       type: "success",
       title: "Item Added!",
-      description: "The item has been successfully added to your cart.",
+      // description: "The item has been successfully added to your cart.",
     });
   };
 
   return (
     <Flex gap={2} mt={4}>
+      <Toaster/>
       <Link href={"/checkout"}>
-        <Button intent="buyNow" text="Buy now" />
+        <Button intent="buyNow" text="Buy now" onClick={addCart} />
       </Link>
       <Button intent="addCart" text="Add to cart" onClick={addCart} />
     </Flex>
