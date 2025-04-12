@@ -59,6 +59,21 @@ export const apiSlice = createApi({
       }),
     }),
 
+    getReview: builder.query({
+      query: ({ id }) => ({
+        url: `users/get-review/${id}`,
+        method: "GET",
+      }),
+    }),
+
+    postReview: builder.mutation({
+      query: ({ comment, rating, id }) => ({
+        url: `users/post-review/${id}`,
+        method: "POST",
+        body: { comment, rating },
+      }),
+    }),
+
     // Checkout (handles the checkout process)
     checkout: builder.mutation({
       query: ({ body, token }) => ({
@@ -91,6 +106,8 @@ export const {
   useGetCurrentUserQuery,
   useSearchProductsMutation,
   useProductDetailsQuery,
+  useGetReviewQuery,
+  usePostReviewMutation,
   useCheckoutMutation,
   useGetOrderListQuery,
 } = apiSlice;

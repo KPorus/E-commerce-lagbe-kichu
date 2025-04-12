@@ -1,90 +1,94 @@
-import {
-  Box,
-  Button,
-  Input,
-  Tabs,
-  Text,
-  Textarea,
-  VStack,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Box, Button, Tabs, Text, Textarea, VStack } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { LuVideo } from "react-icons/lu";
 import RatingSvgIcons from "./RatingSvgIcons";
+import { useGetReviewQuery, usePostReviewMutation } from "@/lib/api/apiSlice";
+import { useAppSelector } from "@/lib/hooks";
+
 interface Review {
   name: string;
   comment: string;
   rating: number;
 }
+interface ReviewInput {
+  comment: string;
+  rating: number;
+}
+
 const ProductDetailsTabSection = ({
   previewVideo,
+  id,
 }: {
   previewVideo: string;
+  id: string;
 }) => {
+  const user = useAppSelector((state) => state.auth.user);
+  const { data, isLoading, refetch } = useGetReviewQuery({ id });
+  const [postReview] = usePostReviewMutation();
+
   const [value, setValue] = useState<string | null>("previewVideo");
   const [rating, setRating] = useState<number>(0);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [reviewInput, setReviewInput] = useState<Review>({
-    name: "",
+
+  const [reviewInput, setReviewInput] = useState<ReviewInput>({
     comment: "",
-    rating: 0, // rating is now part of the reviewInput state
+    rating: 0,
   });
+  const reviews: Review[] = data || [];
 
-  const handleReviewSubmit = () => {
-    const { name, comment } = reviewInput;
+  useEffect(() => {
+    if (value === "review" && data) {
+    }
+  }, [data, value]);
 
-    if (name.trim() && comment.trim()) {
-      const newReview: Review = {
-        name,
-        comment,
-        rating, // pull from external rating state
-      };
+  const handleReviewSubmit = async () => {
+    const { comment } = reviewInput;
 
-      setReviews((prev) => [...prev, newReview]);
+    if (!user) {
+      alert("Please login to submit a review.");
+      return;
+    }
 
-      // Reset name/comment only
-      setReviewInput({ name: "", comment: "", rating: 0 });
+    console.log('rating: ',rating);
+    if (!comment.trim() || rating <= 0) {
+      alert("Please provide both a comment and a rating.");
+      return;
+    }
+    try {
+      await postReview({ id, comment, rating }).unwrap();
 
-      // Reset external rating
+      setReviewInput({ comment: "", rating });
       setRating(0);
+      await refetch();
+    } catch (error) {
+      console.error("Review submission failed:", error);
     }
   };
 
-  console.log(reviews);
   return (
     <Tabs.Root mt={8} value={value} onValueChange={(e) => setValue(e.value)}>
       <Tabs.List gap={4}>
         <Tabs.Trigger
           value="previewVideo"
-          background={"red.400"}
-          fontWeight={"semibold"}
+          background="red.400"
+          fontWeight="semibold"
           p={4}
-          color={"#F2F2F2"}
+          color="#F2F2F2"
         >
           <LuVideo />
           Preview Video
         </Tabs.Trigger>
         <Tabs.Trigger
           value="review"
-          background={"red.400"}
-          fontWeight={"semibold"}
+          background="red.400"
+          fontWeight="semibold"
           p={4}
-          color={"#F2F2F2"}
+          color="#F2F2F2"
         >
           Review & Rating
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content
-        value="previewVideo"
-        inset="0"
-        _open={{
-          animationName: "fade-in, scale-in",
-          animationDuration: "300ms",
-        }}
-        _closed={{
-          animationName: "fade-out, scale-out",
-          animationDuration: "120ms",
-        }}
-      >
+
+      <Tabs.Content value="previewVideo">
         {previewVideo ? (
           <Box maxW="600px" mx="auto">
             <video
@@ -101,34 +105,14 @@ const ProductDetailsTabSection = ({
           <Text color="gray.500">No preview video available.</Text>
         )}
       </Tabs.Content>
-      <Tabs.Content
-        value="review"
-        inset="0"
-        _open={{
-          animationName: "fade-in, scale-in",
-          animationDuration: "300ms",
-        }}
-        _closed={{
-          animationName: "fade-out, scale-out",
-          animationDuration: "120ms",
-        }}
-      >
+
+      <Tabs.Content value="review">
         <Box>
           {/* Review Form */}
           <VStack align="start" mb={6}>
             <Text fontSize="lg" fontWeight="bold">
               Leave a Review
             </Text>
-            <Input
-              borderWidth="3px"
-              borderColor="gray.600"
-              p={4}
-              placeholder="Your Name"
-              value={reviewInput.name}
-              onChange={(e) =>
-                setReviewInput((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
             <Textarea
               borderWidth="3px"
               borderColor="gray.600"
@@ -136,7 +120,10 @@ const ProductDetailsTabSection = ({
               placeholder="Write your review..."
               value={reviewInput.comment}
               onChange={(e) =>
-                setReviewInput((prev) => ({ ...prev, comment: e.target.value }))
+                setReviewInput((prev) => ({
+                  ...prev,
+                  comment: e.target.value,
+                }))
               }
             />
 
@@ -146,7 +133,10 @@ const ProductDetailsTabSection = ({
               setRating={setRating}
               userReview={rating}
             />
-            <Button colorScheme="red" onClick={handleReviewSubmit}>
+            <Button
+              loading={isLoading}
+              onClick={handleReviewSubmit}
+            >
               Submit Review
             </Button>
           </VStack>
@@ -156,7 +146,9 @@ const ProductDetailsTabSection = ({
             <Text fontSize="lg" fontWeight="bold" mb={2}>
               Reviews
             </Text>
-            {reviews.length === 0 ? (
+            {isLoading ? (
+              <Text color="gray.500">Loading...</Text>
+            ) : reviews.length === 0 ? (
               <Text color="gray.500">No reviews yet.</Text>
             ) : (
               reviews.map((r, index) => (

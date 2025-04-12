@@ -58,3 +58,14 @@ export interface GetProductsParams {
   minPrice?: number;
   maxPrice?: number;
 }
+
+export type OrderItem = {
+  _id: string;
+  quantity: number;
+  totalPrice: number;
+  productTitle: string;
+  productPrice: number;
+  productImages: string[];
+  status: string;
+  productId: string;
+};

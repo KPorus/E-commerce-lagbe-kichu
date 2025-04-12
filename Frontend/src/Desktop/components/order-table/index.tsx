@@ -1,6 +1,7 @@
 "use client";
 import { useGetOrderListQuery } from "@/lib/api/apiSlice";
 import { useAppSelector } from "@/lib/hooks";
+import { OrderItem } from "@/types/product.types";
 import {
   Box,
   Flex,
@@ -26,7 +27,7 @@ const OrderTable = () => {
     limit,
   });
 
-  const orderItems = data?.orders || [];
+  const orderItems:OrderItem[] = data?.orders || [];
   const totalOrders = data?.total || 0;
   const totalPages = Math.ceil(totalOrders / limit);
   console.log(data?.total);

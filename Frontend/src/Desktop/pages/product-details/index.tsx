@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import ProductDetailsTabSection from "../../components/tabbed-section";
+import { useEffect } from "react";
 
 type Props = {
   id: string;
@@ -26,7 +27,18 @@ const ProductDetails = ({ id }: Props) => {
   const token = useAppSelector((state) => state.auth.token);
   const dispatch = useAppDispatch();
 
-  const { data, isLoading, error } = useProductDetailsQuery({ id, token });
+  const { data, isLoading, error, refetch } = useProductDetailsQuery({
+    id,
+    token,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await refetch();
+    };
+
+    fetchData();
+  }, [refetch]);
 
   if (isLoading) {
     return (
@@ -58,6 +70,7 @@ const ProductDetails = ({ id }: Props) => {
     discountEndTime,
     discount,
   } = data;
+
   const image = images[0];
   const addCart = () => {
     dispatch(
@@ -134,7 +147,7 @@ const ProductDetails = ({ id }: Props) => {
         </Box>
       </Flex>
 
-      <ProductDetailsTabSection previewVideo={previewVideo} />
+      <ProductDetailsTabSection previewVideo={previewVideo} id={id} />
     </Container>
   );
 };

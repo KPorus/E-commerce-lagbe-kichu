@@ -31,7 +31,7 @@ const LatestProducts = () => {
     };
 
     fetchProducts();
-  }, [activeTab]);
+  }, [activeTab, searchProducts]);
 
   return (
     <Container maxW="breakpoint-xl">
