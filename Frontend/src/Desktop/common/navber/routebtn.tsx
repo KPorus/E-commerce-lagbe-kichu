@@ -52,6 +52,33 @@ const RouteBtn = () => {
           </Link>
         </>
       )}
+      {/* Mannager */}
+      {user?.role === "MANAGER" && (
+        <>
+          <Link href={"/seller/add-product"}>
+            <Button text="Add Product" intent={"tertiary"} />
+          </Link>
+          <Link href={"/seller/orders"}>
+            <Button text="My Orders" intent={"tertiary"} />
+          </Link>
+        </>
+      )}
+      {/* ACCOUNTANT */}
+      {user?.role === "ACCOUNTANT" && (
+        <>
+          <Link href={"/seller/orders"}>
+            <Button text="My Orders" intent={"tertiary"} />
+          </Link>
+        </>
+      )}
+      {/* INVENTORY */}
+      {user?.role === "INVENTORY" && (
+        <>
+          <Link href={"/seller/add-product"}>
+            <Button text="Add Product" intent={"tertiary"} />
+          </Link>
+        </>
+      )}
 
       {user?.role === "SELLER" || user?.role === "ADMIN" ? "" : <Cartbtn />}
     </Flex>
