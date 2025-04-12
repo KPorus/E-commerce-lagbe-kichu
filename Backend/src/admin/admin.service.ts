@@ -41,19 +41,28 @@ export class AdminService {
     return { data: users as Users[], total };
   }
 
-  async banUser(id: string) {
+  async statusToggle(id: string) {
     try {
-      const users = await this.userModel.updateOne(
-        { _id: id },
-        { $set: { status: AccountStatus.BAN } },
-      );
+      const users = await this.userModel.updateOne({ _id: id }, [
+        {
+          $set: {
+            status: {
+              $cond: [
+                { $eq: ['$status', 'BAN'] },
+                AccountStatus.UNBAN,
+                AccountStatus.BAN,
+              ],
+            },
+          },
+        },
+      ]);
 
       if (users.modifiedCount === 0) {
         throw new NotFoundException('No users found');
       }
 
       return {
-        message: 'User banned successfully',
+        message: 'User status updated.',
         data: users,
       };
     } catch (error: unknown) {
@@ -62,30 +71,6 @@ export class AdminService {
       }
       throw new BadRequestException(
         'Unknown error occurred while banning user',
-      );
-    }
-  }
-  async unbanUser(id: string) {
-    try {
-      const users = await this.userModel.updateOne(
-        { _id: id },
-        { $set: { status: AccountStatus.UNBAN } },
-      );
-
-      if (users.modifiedCount === 0) {
-        throw new NotFoundException('No users found');
-      }
-
-      return {
-        message: 'User unbanned successfully',
-        data: users,
-      };
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        handleMongoErrors(error);
-      }
-      throw new BadRequestException(
-        'Unknown error occurred while unbanning user',
       );
     }
   }

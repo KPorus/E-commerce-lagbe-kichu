@@ -66,6 +66,16 @@ export const apiSlice = createApi({
       }),
     }),
 
+    toggleUserStatus: builder.mutation({
+      query: ({ id, token }) => ({
+        url: `admin/users/${id}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
+
     postReview: builder.mutation({
       query: ({ comment, rating, id }) => ({
         url: `users/post-review/${id}`,
@@ -96,6 +106,29 @@ export const apiSlice = createApi({
         },
       }),
     }),
+    getAllUsers: builder.query({
+      query: ({
+        role = "",
+        status = "",
+        text = "",
+        page = 1,
+        limit = 10,
+        token,
+      }) => ({
+        url: `/admin/users`,
+        method: "GET",
+        params: {
+          role,
+          status,
+          text,
+          page,
+          limit,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -108,6 +141,8 @@ export const {
   useProductDetailsQuery,
   useGetReviewQuery,
   usePostReviewMutation,
+  useGetAllUsersQuery,
+  useToggleUserStatusMutation,
   useCheckoutMutation,
   useGetOrderListQuery,
 } = apiSlice;
