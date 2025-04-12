@@ -142,9 +142,13 @@ export class SellerController {
 
   // Get all products of a seller ===============================
   @UseGuards(CombinGuard)
-  @Get('/get-products/:id')
-  getProducts(@Param('id') id: string) {
-    return this.sellerService.getProducts(id);
+  @Get('/get-products')
+  getProducts(@GetUser() user: any) {
+    const userId = user._id || user.created_by;
+    if (!userId) {
+      throw new BadRequestException('Invalid user ID');
+    }
+    return this.sellerService.getProducts(userId);
   }
 
   // Delete a product by ID ===============================
