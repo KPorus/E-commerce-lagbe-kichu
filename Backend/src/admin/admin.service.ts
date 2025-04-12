@@ -7,26 +7,40 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountStatus, Users } from 'src/schema/users';
 import { handleMongoErrors } from 'src/utils/error.handle';
+import { GetUsersQueryDto } from './dto';
 
 @Injectable()
 export class AdminService {
   constructor(@InjectModel(Users.name) private userModel: Model<Users>) {}
 
-  async getAllUsers(): Promise<Users[]> {
-    const users = await this.userModel.aggregate([
-      {
-        $project: {
-          password: 0,
-        },
-      },
-    ]);
+  async getAllUsers(
+    query: GetUsersQueryDto,
+  ): Promise<{ data: Users[]; total: number }> {
+    console.log(query);
+    const { role, status, text, page = 1, limit = 10 } = query;
+    const filter: any = {};
 
-    if (users.length === 0) {
-      throw new NotFoundException('No users found');
+    if (role) filter.role = role;
+    if (status) filter.status = status;
+    if (text) {
+      filter.$or = [
+        { name: { $regex: text, $options: 'i' } },
+        { email: { $regex: text, $options: 'i' } },
+      ];
     }
 
-    return users as Users[];
+    const users = await this.userModel.aggregate([
+      { $match: filter },
+      { $project: { password: 0 } },
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
+    ]);
+
+    const total = await this.userModel.countDocuments(filter);
+
+    return { data: users as Users[], total };
   }
+
   async banUser(id: string) {
     try {
       const users = await this.userModel.updateOne(
