@@ -142,6 +142,24 @@ export class SellerService {
     }
   }
 
+  async getEmployee(id: string): Promise<Users[]> {
+    try {
+      const filter = { created_by: new Types.ObjectId(id) };
+      const employee = await this.userModel.aggregate([
+        { $match: filter },
+        { $project: { password: 0 } },
+      ]);
+      if (employee.length === 0) {
+        throw new NotFoundException('Employee not found');
+      }
+      return employee as Users[];
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        handleMongoErrors(error);
+      }
+      throw new BadRequestException(error);
+    }
+  }
   async getOrders(id: string) {
     try {
       const orders = await this.orderModel.find({

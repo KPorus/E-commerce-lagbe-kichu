@@ -59,6 +59,27 @@ export const apiSlice = createApi({
       }),
     }),
 
+    getEmployee: builder.query({
+      query: (token) => ({
+        url: `seller/get-employee`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
+
+    createEmployee: builder.mutation({
+      query: ({ token, newUser }) => ({
+        url: "seller/create",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: newUser,
+      }),
+    }),
+
     getReview: builder.query({
       query: ({ id }) => ({
         url: `users/get-review/${id}`,
@@ -144,5 +165,7 @@ export const {
   useGetAllUsersQuery,
   useToggleUserStatusMutation,
   useCheckoutMutation,
+  useGetEmployeeQuery,
+  useCreateEmployeeMutation,
   useGetOrderListQuery,
 } = apiSlice;

@@ -155,10 +155,16 @@ export class SellerController {
   }
 
   // Create a seller employee ===============================
-  @Post('/create/:id')
+  @Post('/create/')
   @UseGuards(SellerGuard)
-  createUsers(@Param('id') id: string, @Body() dto: CreateUserDto) {
-    return this.sellerService.createUsers(dto, id);
+  createUsers(@GetUser() user, @Body() dto: CreateUserDto) {
+    return this.sellerService.createUsers(dto, user._id);
+  }
+  // Get Employee
+  @Get('/get-employee')
+  @UseGuards(SellerGuard)
+  getEmployee(@GetUser() user) {
+    return this.sellerService.getEmployee(user._id);
   }
 
   // Get Seller order ================================
