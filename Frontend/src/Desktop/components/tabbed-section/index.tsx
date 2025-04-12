@@ -4,6 +4,8 @@ import { LuVideo } from "react-icons/lu";
 import RatingSvgIcons from "./RatingSvgIcons";
 import { useGetReviewQuery, usePostReviewMutation } from "@/lib/api/apiSlice";
 import { useAppSelector } from "@/lib/hooks";
+import { toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/navigation";
 
 interface Review {
   name: string;
@@ -22,6 +24,7 @@ const ProductDetailsTabSection = ({
   previewVideo: string;
   id: string;
 }) => {
+  const router = useRouter()
   const user = useAppSelector((state) => state.auth.user);
   const { data, isLoading, refetch } = useGetReviewQuery({ id });
   const [postReview] = usePostReviewMutation();
@@ -44,13 +47,19 @@ const ProductDetailsTabSection = ({
     const { comment } = reviewInput;
 
     if (!user) {
-      alert("Please login to submit a review.");
-      return;
+      toaster.error({
+        title: "Login required",
+        description: "Please login to proceed with Review.",
+      });
+      return router.push("/login");
     }
 
-    console.log('rating: ',rating);
+    console.log("rating: ", rating);
     if (!comment.trim() || rating <= 0) {
-      alert("Please provide both a comment and a rating.");
+      toaster.error({
+        title: "Review & Rating",
+        description: "Please provide both a comment and a rating.",
+      });
       return;
     }
     try {
@@ -133,10 +142,7 @@ const ProductDetailsTabSection = ({
               setRating={setRating}
               userReview={rating}
             />
-            <Button
-              loading={isLoading}
-              onClick={handleReviewSubmit}
-            >
+            <Button loading={isLoading} onClick={handleReviewSubmit}>
               Submit Review
             </Button>
           </VStack>

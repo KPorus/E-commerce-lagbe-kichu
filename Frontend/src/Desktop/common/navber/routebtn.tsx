@@ -13,29 +13,47 @@ const RouteBtn = () => {
   return (
     <Flex gap={5} alignItems={"center"}>
       <Image src={logo} alt="Logo" width={100} height={50} />
-      {user?.role == "USER" && user ? (
+      {/* Common for all users */}
+      <Link href={"/"}>
+        <Button text="Home" intent={"tertiary"} />
+      </Link>
+      {user?.role === "SELLER" || user?.role === "ADMIN" ? "" :
+      <Link href={"/product"}>
+        <Button text="Product" intent={"tertiary"} />
+      </Link>}
+
+      {/* USER only */}
+      {user?.role === "USER" && (
         <>
-          <Link href={"/"}>
-            <Button text="Home" intent={"tertiary"} />
-          </Link>
-          <Link href={"/product"}>
-            <Button text="Product" intent={"tertiary"} />
-          </Link>
           <Link href={"/order"}>
             <Button text="Order" intent={"tertiary"} />
           </Link>
         </>
-      ) : (
+      )}
+
+      {/* ADMIN only */}
+      {user?.role === "ADMIN" && (
+        <Link href={"/admin/dashboard"}>
+          <Button text="Dashboard" intent={"tertiary"} />
+        </Link>
+      )}
+
+      {/* SELLER only */}
+      {user?.role === "SELLER" && (
         <>
-          <Link href={"/"}>
-            <Button text="Home" intent={"tertiary"} />
+          <Link href={"/seller/dashboard"}>
+            <Button text="Seller Dashboard" intent={"tertiary"} />
           </Link>
-          <Link href={"/product"}>
-            <Button text="Product" intent={"tertiary"} />
+          <Link href={"/seller/add-product"}>
+            <Button text="Add Product" intent={"tertiary"} />
+          </Link>
+          <Link href={"/seller/orders"}>
+            <Button text="My Orders" intent={"tertiary"} />
           </Link>
         </>
       )}
-      <Cartbtn />
+
+      {user?.role === "SELLER" || user?.role === "ADMIN" ? "" : <Cartbtn />}
     </Flex>
   );
 };
