@@ -134,20 +134,6 @@ const ProductDetails = ({ id }: Props) => {
         </Box>
       </Flex>
 
-      {/* Preview Video */}
-      {/* {previewVideo && (
-        <Box mt={8} maxW="400px">
-          <video
-            width="100%"
-            height="300"
-            controls
-            style={{ borderRadius: "8px", objectFit: "cover" }}
-          >
-            <source src={previewVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </Box>
-      )} */}
       <ProductDetailsTabSection previewVideo={previewVideo} />
     </Container>
   );

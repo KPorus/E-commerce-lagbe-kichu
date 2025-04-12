@@ -23,3 +23,9 @@ export interface ProductDetails {
   productPrice: number;
   productImages: string[];
 }
+
+export interface IReview {
+  name: string;
+  comment: string;
+  rating: number;
+}

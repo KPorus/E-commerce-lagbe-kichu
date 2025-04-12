@@ -8,6 +8,17 @@ export enum ProductCategory {
   BEAUTY = 'BEAUTY',
 }
 
+export class Review {
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  comment: string;
+
+  @Prop({ required: true, min: 0, max: 5 })
+  rating: number;
+}
+
 @NestSchema({ timestamps: true })
 export class Products {
   _id: string;
@@ -43,14 +54,20 @@ export class Products {
   @Prop({ required: true, default: Date.now() })
   created_at: Date;
 
+  // Average product rating
   @Prop({ type: Number, default: 0, min: 0, max: 5 })
   rating: number;
+
+  // // Total number of users who rated
+  // @Prop({ type: Number, default: 0 })
+  // ratingCount: number;
 
   @Prop({ type: Number, default: 0, min: 0, max: 20 })
   discount: number;
 
-  @Prop({ type: [String], default: [] })
-  reviews: string[];
+  // Array of detailed review objects
+  @Prop({ type: [Review], default: [] })
+  reviews: Review[];
 
   // Flags
   @Prop({ default: false })
@@ -70,6 +87,8 @@ export class Products {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Products);
+
+// Indexes
 ProductSchema.index({ _id: 1 }, { background: true });
 ProductSchema.index({ category: 1 }, { background: true });
 ProductSchema.index({ bestArrival: 1 }, { background: true });

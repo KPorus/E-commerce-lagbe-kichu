@@ -1,11 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Orders, OrderStatus } from 'src/schema/order';
 import { Products } from 'src/schema/product';
 import { Users } from 'src/schema/users';
 import { handleMongoErrors } from 'src/utils/error.handle';
-import { CreateOrderDto, ProductDetails } from './dto';
+import { CreateOrderDto, IReview, ProductDetails } from './dto';
 
 @Injectable()
 export class UsersService {
@@ -313,6 +317,68 @@ export class UsersService {
       throw new BadRequestException(
         'Error fetching products: ' + (error as Error).message,
       );
+    }
+  }
+
+  async addReview(id: string, dto: IReview) {
+    const session = await this.productModel.startSession();
+
+    try {
+      session.startTransaction();
+
+      const product = await this.productModel.findById(id).session(session);
+
+      if (!product) {
+        throw new NotFoundException('Product Not found');
+      }
+
+      product.reviews.push(dto);
+
+      const totalRating = product.reviews.reduce(
+        (sum, review) => sum + review.rating,
+        0,
+      );
+      const ratingCount = product.reviews.length;
+      const averageRating = totalRating / ratingCount;
+
+      product.rating = parseFloat(averageRating.toFixed(1));
+      await product.save({ session });
+
+      await session.commitTransaction();
+      await session.endSession();
+
+      return {
+        message: 'Review added successfully',
+        rating: product.rating,
+        ratingCount,
+      };
+    } catch (error: unknown) {
+      // Rollback the transaction in case of an error
+      await session.abortTransaction();
+      await session.endSession();
+
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      }
+      throw error;
+    }
+  }
+
+  async getReview(id: string) {
+    try {
+      const product = await this.productModel.findById({
+        _id: new Types.ObjectId(id),
+      });
+      if (!product) {
+        throw new NotFoundException('Product Not found');
+      }
+
+      return product.reviews;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      }
+      throw error;
     }
   }
 }

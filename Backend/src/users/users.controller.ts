@@ -72,4 +72,24 @@ export class UsersController {
       throw new BadRequestException('Error during checkout: ' + error.message);
     }
   }
+
+  @Post('/post-review/:id')
+  @UseGuards(JwtGuard)
+  postReviewById(
+    @Param('id') id: string,
+    @GetUser() user,
+    @Body()
+    dto: {
+      comment: string;
+      rating: number;
+    },
+  ) {
+    const data = { ...dto, name: user.username };
+    return this.userService.addReview(id, data);
+  }
+
+  @Get('/get-review/:id')
+  getReviewById(@Param('id') id: string) {
+    return this.userService.getReview(id);
+  }
 }
