@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
 import { setCredentials } from "@/lib/features/authSlice";
-import { Toaster, toaster } from "@/components/ui/toaster";
+import { toaster } from "@/components/ui/toaster";
 import { useLoginUserMutation } from "@/lib/api/apiSlice";
 import {
   Button,
@@ -46,7 +46,6 @@ const Login = () => {
 
   return (
     <Container maxW="sm" mt={10}>
-      <Toaster/>
       {error && <Text color="red.500">{error}</Text>}
       <VStack>
         <Text fontSize="2xl" fontWeight="bold">

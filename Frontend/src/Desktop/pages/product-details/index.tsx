@@ -13,8 +13,10 @@ import {
   Spinner,
   Flex,
   Badge,
+  Container,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import ProductDetailsTabSection from "../../components/tabbed-section";
 
 type Props = {
   id: string;
@@ -79,36 +81,36 @@ const ProductDetails = ({ id }: Props) => {
   };
 
   return (
-    <Box maxW="1000px" mx="auto" mt={8} p={4}>
+    <Container
+      maxW="breakpoint-xl"
+      mx="auto"
+      mt={8}
+      p={4}
+      border="ActiveBorder"
+    >
       <Flex direction={["column", "row"]} gap={8}>
-        {/* Images */}
-        <Box flex="1">
+        {/* Product Image */}
+        <Box flex="1" maxW="400px">
           <Image
             src={images?.[0]}
             alt={title}
             borderRadius="md"
             w="100%"
-            h="auto"
-            objectFit="cover"
+            h="400px"
+            objectFit="fill"
           />
-          {previewVideo && (
-            <Box mt={4}>
-              <video width="100%" controls>
-                <source src={previewVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </Box>
-          )}
         </Box>
 
         {/* Product Info */}
         <Box flex="1">
-          <Heading mb={2}>{title}</Heading>
+          <Heading mb={2} fontWeight={"semibold"} textStyle={"2xl"}>
+            {title}
+          </Heading>
           <Badge colorScheme="blue" mb={2}>
             {category}
           </Badge>
           <Text fontSize="xl" fontWeight="bold" mb={2}>
-            ${price}
+            BDT {price}
           </Text>
           <Text mb={2}>⭐ {rating} / 5</Text>
           <Text mb={4} color="gray.700">
@@ -131,7 +133,23 @@ const ProductDetails = ({ id }: Props) => {
           </Flex>
         </Box>
       </Flex>
-    </Box>
+
+      {/* Preview Video */}
+      {/* {previewVideo && (
+        <Box mt={8} maxW="400px">
+          <video
+            width="100%"
+            height="300"
+            controls
+            style={{ borderRadius: "8px", objectFit: "cover" }}
+          >
+            <source src={previewVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </Box>
+      )} */}
+      <ProductDetailsTabSection previewVideo={previewVideo} />
+    </Container>
   );
 };
 

@@ -1,5 +1,5 @@
 "use client";
-import { Toaster, toaster } from "@/components/ui/toaster";
+import {  toaster } from "@/components/ui/toaster";
 import { useCheckoutMutation } from "@/lib/api/apiSlice";
 import {
   addQuantity,
@@ -90,7 +90,6 @@ const Cart = () => {
 
   return (
     <Container maxW={"breakpoint-xl"} p={6}>
-      <Toaster />
       <Grid templateColumns="repeat(2, 1fr)" gap="4">
         {/* Left: Cart Table */}
         <Box overflowX="auto">
