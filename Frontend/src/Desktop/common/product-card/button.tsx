@@ -55,7 +55,12 @@ const ProductCardBtn = ({
 
   return (
     <>
-       {user?.role === "SELLER" || user?.role === "ADMIN" ? "" :(
+      {user?.role === "SELLER" || user?.role === "ADMIN" ? (
+        <Flex mt={4} gap={4}>
+          <Button intent="addCart" text="Delete" />
+          <Button intent="buyNow" text="Edit" />
+        </Flex>
+      ) : (
         <Flex gap={2} mt={4}>
           <Link href={"/checkout"}>
             <Button intent="buyNow" text="Buy now" onClick={addCart} />

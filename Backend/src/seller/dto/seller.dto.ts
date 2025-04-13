@@ -44,6 +44,11 @@ export class CreateProductDto {
 
   @IsNumber()
   price: number;
+
+  @IsNumber()
+  @IsOptional()
+  discount?: number;
+
   @IsNumber()
   quantity: number;
 

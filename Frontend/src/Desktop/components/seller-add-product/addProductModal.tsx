@@ -1,6 +1,9 @@
 import { Box, Button, Flex, Input, Text, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
 import styles from "./modal.module.scss";
+import { toaster } from "@/components/ui/toaster";
+import { useAddProductMutation } from "@/lib/api/apiSlice";
+import { useAppSelector } from "@/lib/hooks";
 // Define the types for the form data
 interface FormData {
   title: string;
@@ -13,9 +16,9 @@ interface FormData {
   discount: number;
   featured: boolean;
   specialDiscount?: boolean;
-  discountEndTime?: Date | null;
+  discountDurationInDays?: Date | null;
   images: File[];
-  previewVideo: File | null;
+  video: File | null;
 }
 
 const AddProductModal = ({
@@ -25,6 +28,8 @@ const AddProductModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const [addProduct] = useAddProductMutation();
+  const token = useAppSelector((state) => state.auth.token);
   // State for form data
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -37,9 +42,9 @@ const AddProductModal = ({
     discount: 0,
     featured: false,
     specialDiscount: false,
-    discountEndTime: null,
+    discountDurationInDays: null,
     images: [],
-    previewVideo: null,
+    video: null,
   });
 
   // Handle input change for text and number fields
@@ -50,19 +55,24 @@ const AddProductModal = ({
   ) => {
     const { name, value, type, checked } = e.target;
 
-    // Check if the input is a checkbox
     if (type === "checkbox") {
       setFormData((prevState) => ({
         ...prevState,
-        [name]: checked, // Use checked for checkboxes
+        [name]: checked,
+      }));
+    } else if (type === "number") {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: Number(value),
       }));
     } else {
       setFormData((prevState) => ({
         ...prevState,
-        [name]: value, // Use value for other input types
+        [name]: value,
       }));
     }
   };
+
   console.log(formData);
   // Handle category change
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -81,24 +91,53 @@ const AddProductModal = ({
     const files = e.target.files;
 
     if (files) {
+      const selectedFiles = Array.from(files);
+
+      if (selectedFiles.length > 5) {
+        toaster.warning({
+          title: "Image Requirement",
+          description: "You can upload a maximum of 5 images.",
+        });
+        return;
+      }
+
+      if (selectedFiles.length < 1) {
+        toaster.warning({
+          title: "Image Requirement",
+          description: "You must select at least 1 image.",
+        });
+        return;
+      }
+
+      console.log(
+        "Selected images:",
+        selectedFiles.map((f) => ({ name: f.name, size: f.size }))
+      );
       setFormData((prevState) => ({
         ...prevState,
-        images: Array.from(files), // Convert FileList to an array
+        images: selectedFiles,
       }));
     }
   };
 
-  // Handle file input for video
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files[0]) {
+      console.log("Selected video:", {
+        name: files[0].name,
+        size: files[0].size,
+      });
       setFormData((prevState) => ({
         ...prevState,
-        previewVideo: files[0],
+        video: files[0],
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        video: null,
       }));
     }
   };
-
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,39 +154,43 @@ const AddProductModal = ({
     formDataToSend.append("discount", String(formData.discount));
     formDataToSend.append("featured", String(formData.featured));
 
-    // Append images files
-    formData.images.forEach((image) => {
-      formDataToSend.append("images", image);
+    // Append files as proper file fields
+    formData.images.forEach((image, index) => {
+      formDataToSend.append("images", image); // Match FileFieldsInterceptor name
+      console.log(`Appending image ${index}:`, image.name, image.size);
     });
 
-    // Append preview video
-    if (formData.previewVideo) {
-      formDataToSend.append("previewVideo", formData.previewVideo);
+    if (formData.video) {
+      formDataToSend.append("video", formData.video); // Match FileFieldsInterceptor name
+      console.log("Appending video:", formData.video.name, formData.video.size);
     }
 
-    // Optional: Append specialDiscount and discountEndTime if present
+    // Optional: Append specialDiscount and discountDurationInDays if present
     if (formData.specialDiscount) {
       formDataToSend.append(
         "specialDiscount",
         String(formData.specialDiscount)
       );
     }
-    if (formData.discountEndTime) {
+    if (formData.discountDurationInDays) {
       formDataToSend.append(
-        "discountEndTime",
-        formData.discountEndTime.toISOString()
+        "discountDurationInDays",
+        formData.discountDurationInDays.toISOString()
       );
     }
 
     // Send the data to the backend
     try {
-      const response = await fetch("/your-api-endpoint", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/seller/upload-product`, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // "Content-Type": "multipart/form-data",
+        },
         body: formDataToSend,
       });
-      const data = await response.json();
-      console.log(data);
-      onClose(); // Close the modal after submission
+      console.log(await res.json());
+      onClose();
     } catch (error) {
       console.error("Error uploading product:", error);
     }
@@ -168,7 +211,15 @@ const AddProductModal = ({
         alignItems="center"
         justifyContent="center"
       >
-        <Box bg="white" p={6} borderRadius="md" minW="400px" minH="100vh">
+        <Box
+          bg="white"
+          p={6}
+          borderRadius="md"
+          width="90%"
+          maxWidth="600px"
+          maxHeight="90vh"
+          overflowY="auto"
+        >
           <Flex
             direction={"row"}
             justifyContent={"space-between"}
@@ -220,12 +271,13 @@ const AddProductModal = ({
                 borderWidth="3px"
                 borderColor="gray.600"
                 p={4}
-                type="text"
+                type="number"
                 id="price"
                 name="price"
                 value={formData.price}
                 onChange={handleInputChange}
                 required
+                min={1}
               />
             </div>
 
@@ -240,6 +292,8 @@ const AddProductModal = ({
                 name="discount"
                 value={formData.discount}
                 onChange={handleInputChange}
+                min={0}
+                max={100}
               />
             </div>
 
@@ -255,6 +309,7 @@ const AddProductModal = ({
                 value={formData.quantity}
                 onChange={handleInputChange}
                 required
+                min={1}
               />
             </div>
 
@@ -347,6 +402,7 @@ const AddProductModal = ({
                 type="file"
                 id="images"
                 name="images"
+                accept="image/*"
                 multiple
                 onChange={handleImageChange}
               />
@@ -354,11 +410,11 @@ const AddProductModal = ({
             </div>
 
             <div>
-              <label htmlFor="previewVideo">Preview Video</label>
+              <label htmlFor="video">Preview Video</label>
               <input
                 type="file"
-                id="previewVideo"
-                name="previewVideo"
+                id="video"
+                name="video"
                 onChange={handleVideoChange}
               />
             </div>

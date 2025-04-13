@@ -24,13 +24,17 @@ export const apiSlice = createApi({
     }),
 
     // Refresh Token (Handles token expiration)
-    // refreshToken: builder.query({
-    //   query: () => ({
-    //     url: "/auth/refresh",
-    //     method: "GET",
-    //     credentials: "include", // Allows the cookie (refresh token) to be sent
-    //   }),
-    // }),
+    refreshTokenApi: builder.mutation({
+      query: ({ refreshToken }) => ({
+        url: "/auth/refresh",
+        method: "POST",
+        credentials: "include",
+        body: { refreshToken },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
 
     searchProducts: builder.mutation({
       query: (filters) => ({
@@ -79,6 +83,19 @@ export const apiSlice = createApi({
         body: newUser,
       }),
     }),
+
+    addProduct: builder.mutation({
+      query: ({ token, formData }) => ({
+        url: "seller/upload-product",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          
+        },
+        body: formData,
+      }),
+    }),
+    
 
     getReview: builder.query({
       query: ({ id }) => ({
@@ -150,14 +167,13 @@ export const apiSlice = createApi({
         },
       }),
     }),
-
   }),
 });
 
 export const {
   useLoginUserMutation,
   useRegisterUserMutation,
-  // useRefreshTokenQuery,
+  useRefreshTokenApiMutation,
   useSearchProductsMutation,
   useProductDetailsQuery,
   useGetReviewQuery,
@@ -167,6 +183,7 @@ export const {
   useCheckoutMutation,
   useGetEmployeeQuery,
   useGetSellerProductQuery,
+  useAddProductMutation,
   useCreateEmployeeMutation,
   useGetOrderListQuery,
 } = apiSlice;

@@ -35,8 +35,18 @@ const ProductCard = ({
       alignItems={"center"}
       mb={8}
     >
-      <Box w={"240px"} h={"236px"} position="relative">
-        <Image src={image} alt={title} layout="fill" />
+      <Box w={"257px"} h={"236px"} position="relative" mb={4}>
+        <Image
+          src={image}
+          alt={title}
+          // layout="fill"
+          width={240}
+          height={240}
+          style={{
+            width: "255px",
+            height:"236px"
+          }}
+        />
       </Box>
       <Text
         className="text-lg font-bold"

@@ -1,9 +1,10 @@
 "use client";
 
+import { useRefreshTokenApiMutation } from "@/lib/api/apiSlice";
 import { setCredentials } from "@/lib/features/authSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { createContext, useState, useEffect, useContext } from "react";
-// import { cookies } from "next/headers";
+
 
 interface AuthContextType {
   token: string | null;
@@ -15,31 +16,25 @@ const AuthContext = createContext<AuthContextType>({
   setToken: () => {},
 });
 
-export const AuthProvider = ({ children, refreshToken }: { children: React.ReactNode, refreshToken: string | null }) => {
+export const AuthProvider = ({
+  children,
+  refreshToken,
+}: {
+  children: React.ReactNode;
+  refreshToken: string | null;
+}) => {
   const [token, setToken] = useState<string | null>(null);
+  const [refreshTokenApi] = useRefreshTokenApiMutation();
   const dispatch = useAppDispatch();
 
-//   console.log(refreshToken);
   useEffect(() => {
     const refreshAccessToken = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-          {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ refreshToken: refreshToken || "" }),
-          }
-        );
-
-        if (res.ok) {
-          const data = await res.json();
-          console.log("auth", data);
-          dispatch(setCredentials(data));
-          setToken(data.token);
+        const res = await refreshTokenApi({ refreshToken: refreshToken || "" });
+        if ("data" in res) {
+          console.log("auth", res.data);
+          dispatch(setCredentials(res.data));
+          setToken(res.data.token);
         } else {
           setToken(null);
         }

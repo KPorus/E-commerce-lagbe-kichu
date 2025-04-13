@@ -18,7 +18,10 @@ import { SellerGuard } from 'src/auth/guard/seller.guard';
 // import { ManagerGuard } from 'src/auth/guard/manager.guard';
 import { CreateProductDto, CreateUserDto } from './dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 // import { InventoryGuard } from 'src/auth/guard/inventory.guard';
 import { CombinGuard } from 'src/auth/guard/combin.guard';
 import { GetUser } from 'src/auth/decorator';
@@ -35,14 +38,21 @@ export class SellerController {
   // Add a new product ===============================
   @Post('/upload-product')
   @UseGuards(CombinGuard)
-  // @UseGuards(InventoryGuard)
-  @UseInterceptors(FilesInterceptor('file', 10))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'images', maxCount: 10 },
+      { name: 'video', maxCount: 2 },
+    ]),
+  )
   async createProduct(
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles()
+    files: { images?: Express.Multer.File[]; video?: Express.Multer.File[] },
     @Body() body: CreateProductDto,
     @GetUser() user,
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    console.log('Images:', files.images);
+    console.log('Video:', files.video);
+
     const owner = new Types.ObjectId(user.created_by || user._id);
 
     const existingProduct = await this.sellerService.getProductByTitle(
@@ -54,12 +64,8 @@ export class SellerController {
       );
     }
 
-    const imageFiles = files.filter((file) =>
-      file.mimetype.startsWith('image'),
-    );
-    const videoFiles = files.filter((file) =>
-      file.mimetype.startsWith('video'),
-    );
+    const imageFiles = files.images || [];
+    const videoFiles = files.video || [];
 
     const imageUploadPromises = imageFiles.map((file) =>
       this.cloudinaryService.uploadImage(file),
@@ -74,7 +80,6 @@ export class SellerController {
     }
 
     let discountEndTime: Date | null = null;
-
     if (body.specialDiscount && body.discountDurationInDays) {
       const now = new Date();
       discountEndTime = new Date(
