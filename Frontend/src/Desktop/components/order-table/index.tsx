@@ -30,9 +30,9 @@ const OrderTable = () => {
   const orderItems:OrderItem[] = data?.orders || [];
   const totalOrders = data?.total || 0;
   const totalPages = Math.ceil(totalOrders / limit);
-  console.log(data?.total);
-  console.log("Total Orders:", totalOrders);
-  console.log("Total Pages:", totalPages);
+  // console.log(data?.total);
+  // console.log("Total Orders:", totalOrders);
+  // console.log("Total Pages:", totalPages);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -41,7 +41,10 @@ const OrderTable = () => {
   };
 
   useEffect(() => {
-    if (!user) return router.push("/login");
+    const timer = setTimeout(() => {
+      if (!user) router.push("/login");
+    }, 1000); 
+    return () => clearTimeout(timer);
   }, [router, user]);
 
   return (

@@ -129,17 +129,6 @@ export class AuthService {
         throw new UnauthorizedException('User not found');
       }
 
-      // Generate new access token and refresh token
-      // const newAccessToken = await this.signToken(
-      //   user._id.toString(),
-      //   user.email,
-      //   user.role,
-      // );
-      // const newRefreshToken = await this.signRefreshToken(
-      //   user._id.toString(),
-      //   user.email,
-      //   user.role,
-      // );
       const [accessToken, newRefreshToken] = await Promise.all([
         this.signToken(user._id.toString(), user.email, user.role),
         this.signRefreshToken(user._id.toString(), user.email, user.role),
@@ -155,6 +144,7 @@ export class AuthService {
       console.log('New refresh token set in cookie');
 
       return res.json({
+        user: user,
         token: accessToken,
       });
     } catch (error: unknown) {
@@ -162,6 +152,18 @@ export class AuthService {
         handleMongoErrors(error, `Error refreshing token: ${error.message}`);
       }
       throw new BadRequestException('Invalid refresh token');
+    }
+  }
+
+  logout(res: Response) {
+    try {
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        sameSite: 'strict',
+      });
+      res.status(200).json({ message: 'Logged out successfully' });
+    } catch (error: unknown) {
+      throw new BadRequestException(error);
     }
   }
 }

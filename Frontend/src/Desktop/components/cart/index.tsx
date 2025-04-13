@@ -1,5 +1,5 @@
 "use client";
-import {  toaster } from "@/components/ui/toaster";
+import { toaster } from "@/components/ui/toaster";
 import { useCheckoutMutation } from "@/lib/api/apiSlice";
 import {
   addQuantity,
@@ -21,26 +21,33 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Cart = () => {
+  const [hasMounted, setHasMounted] = useState(false);
+
   const router = useRouter();
   const [address, setAddress] = useState({
     country: "",
     city: "",
     postalCode: "",
   });
-
-  const isAddressValid = address.country && address.city && address.postalCode;
   const [value, setValue] = useState<string>("CASH");
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.products);
   const token = useAppSelector((state) => state.auth.token);
   const [checkout, { isLoading }] = useCheckoutMutation();
+  
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
+  const isAddressValid = address.country && address.city && address.postalCode;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -72,7 +79,7 @@ const Cart = () => {
 
     try {
       const res = await checkout({ body: requestBody, token }).unwrap();
-      console.log(res);
+      // console.log(res);
       toaster.success({
         title: "Order Placed!",
         description:
@@ -128,6 +135,7 @@ const Cart = () => {
                             boxSize="60px"
                             src={item.image}
                             alt={item.title}
+                            style={{ width: "60px", height: "60px" }}
                           />
                           <Text ml={2}>{item.title}</Text>
                         </Flex>
@@ -158,7 +166,9 @@ const Cart = () => {
                 ) : (
                   <Table.Row bg="transparent">
                     <Table.Cell colSpan={4} textAlign="center">
-                      <Text textStyle={'lg'} fontWeight={'medium'}>No items in the cart</Text>
+                      <Text textStyle={"lg"} fontWeight={"medium"}>
+                        No items in the cart
+                      </Text>
                     </Table.Cell>
                   </Table.Row>
                 )}

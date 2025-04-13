@@ -1,0 +1,8 @@
+.customDatePicker {
+    appearance: none  !important;
+
+    &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        background-color: gray;
+    }
+}

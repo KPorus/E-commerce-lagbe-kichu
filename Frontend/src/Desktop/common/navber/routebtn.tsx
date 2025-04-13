@@ -9,7 +9,6 @@ import logo from "/public/Lagba Kichu1.png";
 import { useAppSelector } from "@/lib/hooks";
 const RouteBtn = () => {
   const user = useAppSelector((state) => state.auth.user);
-  console.log(user);
   return (
     <Flex gap={5} alignItems={"center"}>
       <Image src={logo} alt="Logo" width={100} height={50} />

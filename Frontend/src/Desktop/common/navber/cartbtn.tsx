@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 const Cartbtn = () => {
   const cartItems = useAppSelector((state) => state.cart.products);
   const [isMounted, setIsMounted] = useState(false);
-  console.log(cartItems);
   useEffect(() => {
     setIsMounted(true);
   }, []);

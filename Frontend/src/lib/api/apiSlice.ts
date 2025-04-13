@@ -6,7 +6,6 @@ export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ["User", "Order", "Products"],
   endpoints: (builder) => ({
-    // Login User
     loginUser: builder.mutation({
       query: ({ email, pass }) => ({
         url: "/auth/login",
@@ -16,7 +15,6 @@ export const apiSlice = createApi({
       }),
     }),
 
-    // Register User
     registerUser: builder.mutation({
       query: ({ username, email, pass, role }) => ({
         url: "/auth/register",
@@ -26,21 +24,14 @@ export const apiSlice = createApi({
     }),
 
     // Refresh Token (Handles token expiration)
-    refreshToken: builder.query({
-      query: () => ({
-        url: "/auth/refresh",
-        method: "GET",
-        credentials: "include", // Allows the cookie (refresh token) to be sent
-      }),
-    }),
+    // refreshToken: builder.query({
+    //   query: () => ({
+    //     url: "/auth/refresh",
+    //     method: "GET",
+    //     credentials: "include", // Allows the cookie (refresh token) to be sent
+    //   }),
+    // }),
 
-    // Get Current User (fetches the logged-in user's details)
-    getCurrentUser: builder.query({
-      query: () => "/auth/me",
-      providesTags: ["User"], // Used for cache management and invalidation
-    }),
-
-    // Search Products (for filtering products)
     searchProducts: builder.mutation({
       query: (filters) => ({
         url: "/users/search-product",
@@ -62,6 +53,15 @@ export const apiSlice = createApi({
     getEmployee: builder.query({
       query: (token) => ({
         url: `seller/get-employee`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
+
+    getSellerProduct: builder.query({
+      query: (token) => ({
+        url: `seller/get-products`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +105,6 @@ export const apiSlice = createApi({
       }),
     }),
 
-    // Checkout (handles the checkout process)
     checkout: builder.mutation({
       query: ({ body, token }) => ({
         url: "/users/checkout",
@@ -127,6 +126,7 @@ export const apiSlice = createApi({
         },
       }),
     }),
+
     getAllUsers: builder.query({
       query: ({
         role = "",
@@ -150,14 +150,14 @@ export const apiSlice = createApi({
         },
       }),
     }),
+
   }),
 });
 
 export const {
   useLoginUserMutation,
   useRegisterUserMutation,
-  useRefreshTokenQuery,
-  useGetCurrentUserQuery,
+  // useRefreshTokenQuery,
   useSearchProductsMutation,
   useProductDetailsQuery,
   useGetReviewQuery,
@@ -166,6 +166,7 @@ export const {
   useToggleUserStatusMutation,
   useCheckoutMutation,
   useGetEmployeeQuery,
+  useGetSellerProductQuery,
   useCreateEmployeeMutation,
   useGetOrderListQuery,
 } = apiSlice;

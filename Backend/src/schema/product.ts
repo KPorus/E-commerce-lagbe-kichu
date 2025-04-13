@@ -54,22 +54,15 @@ export class Products {
   @Prop({ required: true, default: Date.now() })
   created_at: Date;
 
-  // Average product rating
   @Prop({ type: Number, default: 0, min: 0, max: 5 })
   rating: number;
-
-  // // Total number of users who rated
-  // @Prop({ type: Number, default: 0 })
-  // ratingCount: number;
 
   @Prop({ type: Number, default: 0, min: 0, max: 20 })
   discount: number;
 
-  // Array of detailed review objects
   @Prop({ type: [Review], default: [] })
   reviews: Review[];
 
-  // Flags
   @Prop({ default: false })
   bestArrival: boolean;
 

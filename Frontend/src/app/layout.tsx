@@ -4,6 +4,9 @@ import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { Provider } from "@/components/ui/provider";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "./authProvider";
+import { getRefreshTokenFromServer, } from "@/utils/getRefreshToken";
+
 const JosefinSans = localFont({
   src: [
     {
@@ -35,17 +38,22 @@ export const metadata: Metadata = {
   description: "E-commerce website for Lagbe Kichu",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const refreshToken = getRefreshTokenFromServer();
+  // console.log(refreshToken);
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${JosefinSans.variable} antialiased`}>
         <Provider>
-          <Toaster/>
-          <StoreProvider>{children}</StoreProvider>
+          <Toaster />
+          <StoreProvider>
+            <AuthProvider refreshToken={refreshToken}>{children}</AuthProvider>
+          </StoreProvider>
         </Provider>
       </body>
     </html>

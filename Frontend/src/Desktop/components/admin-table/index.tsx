@@ -42,7 +42,7 @@ const AdminTable = () => {
     useToggleUserStatusMutation();
 
   const usersdata: UserType[] = (data?.data || []).filter(
-    (i:UserType) => i._id !== user?._id
+    (i: UserType) => i._id !== user?._id
   );
 
   const totalUsers = data?.total || 0;
@@ -56,7 +56,7 @@ const AdminTable = () => {
 
   const handleStatusToggle = async (userId: string) => {
     try {
-      console.log(userId);
+      // console.log(userId);
       await toggleUserStatus({
         id: userId,
         token,
@@ -75,10 +75,13 @@ const AdminTable = () => {
   };
 
   useEffect(() => {
-    if (!user || user.role !== "ADMIN") {
-      router.push("/login");
-    }
-  }, [router, user]);
+    const timer = setTimeout(() => {
+      if (!user|| user.role !== "ADMIN") {
+        router.push("/login");
+      }
+    }, 1000); 
+    return () => clearTimeout(timer);
+  }, [router, token, user]);
 
   return (
     <Container maxW={"breakpoint-xl"} mt={8}>
