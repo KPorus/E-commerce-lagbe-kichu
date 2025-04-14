@@ -1,7 +1,3 @@
-Sure — I’ll help you draft a clean and professional-looking `README.md` for your full-stack project! Here’s a template you can copy and modify for your repository:
-
----
-
 # 🚀 Full Stack Website — NestJS Backend & Next.js Frontend
 
 This is a full-stack web application built using **NestJS** for the backend and **Next.js** with **Chakra UI** for the frontend. The backend handles API logic, authentication, and file uploads (via Cloudinary), while the frontend offers a modern, only available for dasktop.
