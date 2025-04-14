@@ -39,7 +39,7 @@ Replace the values with your actual credentials.
 
 1. **Clone the Repository**
    ```bash
-   git clone https://your-repository-link.git
+   git clone https://github.com/KPorus/E-commerce-lagbe-kichu.git
    cd backend
    ```
 
