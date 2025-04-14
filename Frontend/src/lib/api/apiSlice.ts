@@ -90,12 +90,20 @@ export const apiSlice = createApi({
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          
         },
         body: formData,
       }),
     }),
-    
+
+    deleteProduct: builder.mutation({
+      query: ({ id, token }) => ({
+        url: `seller/delete-product/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
 
     getReview: builder.query({
       query: ({ id }) => ({
@@ -179,6 +187,7 @@ export const {
   useGetReviewQuery,
   usePostReviewMutation,
   useGetAllUsersQuery,
+  useDeleteProductMutation,
   useToggleUserStatusMutation,
   useCheckoutMutation,
   useGetEmployeeQuery,

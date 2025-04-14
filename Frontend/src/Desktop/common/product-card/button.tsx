@@ -5,7 +5,8 @@ import Button from "../button";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setCartProducts } from "@/lib/features/cartSlice";
 import { toaster } from "@/components/ui/toaster";
-import Link from "next/link";
+import { useDeleteProductMutation } from "@/lib/api/apiSlice";
+import { useRouter } from "next/navigation";
 
 const ProductCardBtn = ({
   _id,
@@ -17,6 +18,7 @@ const ProductCardBtn = ({
   specialDiscount,
   discountEndTime,
   discount,
+  refetch,
 }: {
   _id: string;
   image: string;
@@ -27,9 +29,13 @@ const ProductCardBtn = ({
   discountEndTime?: Date | null;
   rating?: number;
   discount?: number;
+  refetch?: () => void;
 }) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
+  const token = useAppSelector((state) => state.auth.token);
+  const [deleteProduct] = useDeleteProductMutation();
 
   const addCart = () => {
     dispatch(
@@ -47,28 +53,57 @@ const ProductCardBtn = ({
       })
     );
     toaster.success({
-      type: "success",
       title: "Item Added!",
       // description: "The item has been successfully added to your cart.",
     });
   };
 
+  const handleBuyNow = () => {
+    addCart();
+    router.push("/checkout"); // Navigate to checkout programmatically
+  };
+
+  const handleDeleteProduct = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const res = await deleteProduct({ id: _id, token });
+    console.log(res.data);
+    if (res.data) {
+      if (refetch) {
+        refetch();
+      }
+      toaster.success({
+        title: "Item Deleted!",
+        description: "The item has been successfully deleted.",
+      });
+    } else {
+      toaster.error({
+        title: "Fail",
+        description: "The item deletion action failed.",
+      });
+    }
+  };
+
   return (
-    <>
+    <Flex gap={2} mt={4}>
       {user?.role === "SELLER" || user?.role === "ADMIN" ? (
-        <Flex mt={4} gap={4}>
-          <Button intent="addCart" text="Delete" />
+        <>
+          <Button
+            intent="addCart"
+            text="Delete"
+            onClick={handleDeleteProduct}
+          />
           <Button intent="buyNow" text="Edit" />
-        </Flex>
+        </>
       ) : (
-        <Flex gap={2} mt={4}>
-          <Link href={"/checkout"}>
-            <Button intent="buyNow" text="Buy now" onClick={addCart} />
-          </Link>
+        <>
+          <Button intent="buyNow" text="Buy now" onClick={handleBuyNow} />
           <Button intent="addCart" text="Add to cart" onClick={addCart} />
-        </Flex>
+        </>
       )}
-    </>
+    </Flex>
   );
 };
 

@@ -50,8 +50,8 @@ export class SellerController {
     @Body() body: CreateProductDto,
     @GetUser() user,
   ) {
-    console.log('Images:', files.images);
-    console.log('Video:', files.video);
+    // console.log('Images:', files.images);
+    // console.log('Video:', files.video);
 
     const owner = new Types.ObjectId(user.created_by || user._id);
 

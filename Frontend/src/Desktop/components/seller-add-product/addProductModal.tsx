@@ -2,9 +2,8 @@ import { Box, Button, Flex, Input, Text, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
 import styles from "./modal.module.scss";
 import { toaster } from "@/components/ui/toaster";
-import { useAddProductMutation } from "@/lib/api/apiSlice";
 import { useAppSelector } from "@/lib/hooks";
-// Define the types for the form data
+
 interface FormData {
   title: string;
   description: string;
@@ -28,9 +27,8 @@ const AddProductModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const [addProduct] = useAddProductMutation();
   const token = useAppSelector((state) => state.auth.token);
-  // State for form data
+
   const [formData, setFormData] = useState<FormData>({
     title: "",
     description: "",
@@ -47,13 +45,13 @@ const AddProductModal = ({
     video: null,
   });
 
-  // Handle input change for text and number fields
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target as HTMLInputElement;
+    const checked = (e.target as HTMLInputElement).checked;
 
     if (type === "checkbox") {
       setFormData((prevState) => ({
@@ -73,8 +71,6 @@ const AddProductModal = ({
     }
   };
 
-  console.log(formData);
-  // Handle category change
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -86,7 +82,6 @@ const AddProductModal = ({
     });
   };
 
-  // Handle file input for images
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
@@ -138,7 +133,7 @@ const AddProductModal = ({
       }));
     }
   };
-  // Handle form submission
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -154,18 +149,16 @@ const AddProductModal = ({
     formDataToSend.append("discount", String(formData.discount));
     formDataToSend.append("featured", String(formData.featured));
 
-    // Append files as proper file fields
-    formData.images.forEach((image, index) => {
-      formDataToSend.append("images", image); // Match FileFieldsInterceptor name
-      console.log(`Appending image ${index}:`, image.name, image.size);
+    formData.images.forEach((image) => {
+      formDataToSend.append("images", image); 
+      // console.log(`Appending image ${index}:`, image.name, image.size);
     });
 
     if (formData.video) {
-      formDataToSend.append("video", formData.video); // Match FileFieldsInterceptor name
-      console.log("Appending video:", formData.video.name, formData.video.size);
+      formDataToSend.append("video", formData.video);
+      // console.log("Appending video:", formData.video.name, formData.video.size);
     }
 
-    // Optional: Append specialDiscount and discountDurationInDays if present
     if (formData.specialDiscount) {
       formDataToSend.append(
         "specialDiscount",
@@ -179,19 +172,31 @@ const AddProductModal = ({
       );
     }
 
-    // Send the data to the backend
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/seller/upload-product`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // "Content-Type": "multipart/form-data",
-        },
-        body: formDataToSend,
-      });
-      console.log(await res.json());
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/seller/upload-product`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // "Content-Type": "multipart/form-data",
+          },
+          body: formDataToSend,
+        }
+      );
+      const data = await res.json();
+      if (data.title) {
+        toaster.success({
+          title: "Add product",
+          description: `Product added successfull`,
+        });
+      }
       onClose();
     } catch (error) {
+      toaster.error({
+        title: "Add product",
+        description: `Product added failed`,
+      });
       console.error("Error uploading product:", error);
     }
   };
@@ -389,7 +394,8 @@ const AddProductModal = ({
                 id="discountEndTime"
                 name="discountEndTime"
                 value={
-                  formData.discountEndTime?.toISOString().slice(0, 16) || ""
+                  formData.discountDurationInDays?.toISOString().slice(0, 16) ||
+                  ""
                 }
                 onChange={handleInputChange}
               />

@@ -2,6 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Rating from "../rating";
 import ProductCardBtn from "./button";
+import Link from "next/link";
 
 const ProductCard = ({
   productId,
@@ -14,6 +15,7 @@ const ProductCard = ({
   specialDiscount,
   discountEndTime,
   rating,
+  refetch
 }: {
   productId: string;
   image: string;
@@ -22,11 +24,11 @@ const ProductCard = ({
   description: string;
   price: number;
   discountPrice?: number;
-  rating?: number;
   specialDiscount: boolean;
   discountEndTime?: Date | null;
+  rating?: number;
+  refetch?: () => void;
 }) => {
-  // console.log(image);
   return (
     <Box
       key={productId}
@@ -35,36 +37,43 @@ const ProductCard = ({
       alignItems={"center"}
       mb={8}
     >
-      <Box w={"257px"} h={"236px"} position="relative" mb={4}>
-        <Image
-          src={image}
-          alt={title}
-          // layout="fill"
-          width={240}
-          height={240}
-          style={{
-            width: "255px",
-            height:"236px"
-          }}
-        />
-      </Box>
-      <Text
-        className="text-lg font-bold"
-        color={"#FB2E86"}
-        mt={4}
-        textAlign={"center"}
-      >
-        {title}
-      </Text>
-      <Text textStyle={"md"} my={2}>
-        {description.slice(0, 210)}
-      </Text>
-      <Flex justifyContent={"space-between"}>
-        <Text color={"#151875"} className="text-lg font-semibold">
-          {discountPrice ? `$${discountPrice}` : `$${price}`}
-        </Text>
-        <Rating value={Number(rating)} />
-      </Flex>
+      <Link href={`/product/${productId}`} passHref>
+        <Box as="span">
+          {" "}
+          {/* Use Box as span to avoid <a> nesting issues */}
+          <Box w={"257px"} h={"236px"} position="relative" mb={4}>
+            <Image
+              src={image}
+              alt={title}
+              width={240}
+              height={240}
+              style={{
+                width: "255px",
+                height: "236px",
+              }}
+            />
+          </Box>
+          <Text
+            className="text-lg font-bold"
+            color={"#FB2E86"}
+            mt={4}
+            textAlign={"center"}
+          >
+            {title}
+          </Text>
+          <Text textStyle={"md"} my={2}>
+            {description.slice(0, 210)}
+          </Text>
+          <Flex justifyContent={"space-between"}>
+            <Text color={"#151875"} className="text-lg font-semibold">
+              {discountPrice ? `$${discountPrice}` : `$${price}`}
+            </Text>
+            <Rating value={Number(rating)} />
+          </Flex>
+        </Box>
+      </Link>
+
+      {/* Buttons are outside the Link to avoid nesting */}
       <ProductCardBtn
         _id={productId}
         image={image}
@@ -75,6 +84,7 @@ const ProductCard = ({
         discountEndTime={discountEndTime}
         rating={rating}
         discount={discountPrice}
+        refetch={refetch}
       />
     </Box>
   );

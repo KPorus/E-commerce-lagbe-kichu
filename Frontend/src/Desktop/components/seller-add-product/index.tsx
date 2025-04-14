@@ -3,7 +3,6 @@ import { useGetSellerProductQuery } from "@/lib/api/apiSlice";
 import { useAppSelector } from "@/lib/hooks";
 import { Button, Container, Grid, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-// import AddEmployeeModal from "./createUserModal";
 import { useRouter } from "next/navigation";
 import { IProductCard } from "@/types/product.types";
 import Link from "next/link";
@@ -18,8 +17,7 @@ const SellerAddProduct = () => {
   const { data, isLoading, refetch, error } = useGetSellerProductQuery({
     token,
   });
-  console.log(data);
-  //   const products: Product[] = data || [];
+  // console.log(data);
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -39,17 +37,6 @@ const SellerAddProduct = () => {
       >
         + Add User
       </Button>
-
-      {/* <AddEmployeeModal
-        token={token || ""}
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        onClose={() => {
-          refetch();
-          setIsModalOpen(false);
-        }}
-        employeeList={emp}
-      /> */}
 
       <AddProductModal
         isOpen={isModalOpen}
@@ -78,6 +65,7 @@ const SellerAddProduct = () => {
                   price={product.price}
                   discountPrice={product.discount}
                   rating={product.rating}
+                  refetch={refetch}
                 />
               </Link>
             ))
