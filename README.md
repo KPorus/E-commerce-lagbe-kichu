@@ -97,8 +97,10 @@ Replace the values with your actual credentials.
 root/
 ├── backend/       # NestJS Backend
 │   └── src/
+|     ------
 ├── frontend/      # Next.js Frontend
 │   └── src/
+|     ------
 └── README.md
 ```
 
