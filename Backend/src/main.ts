@@ -4,8 +4,10 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.enableCors({
-    origin: 'https://e-commerce-lagbe-kichu.vercel.app/',
+    origin: 'https://e-commerce-lagbe-kichu.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
   app.useGlobalPipes(
