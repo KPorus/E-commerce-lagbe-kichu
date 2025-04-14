@@ -7,9 +7,18 @@ import { AdminModule } from './admin/admin.module';
 import { SellerModule } from './seller/seller.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { UsersModule } from './users/users.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60,
+          limit: 10,
+        },
+      ],
+    }),
     ScheduleModule.forRoot(),
     DatabaseModule,
     AuthModule,
