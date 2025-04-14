@@ -1,0 +1,186 @@
+[{
+  "_id": {
+    "$oid": "67f4e6ef7a789e5dd96efddd"
+  },
+  "username": "fardin",
+  "email": "mdfardinkhan1952@gmail.com",
+  "password": "fca17e3ac4a072471824774a26e6aedc:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:e6558211",
+  "role": "USER",
+  "status": "UNBAN",
+  "created_by": null,
+  "created_at": {
+    "$date": "2025-04-08T09:04:50.625Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:28.003Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67f4e723478f472d7f0902ac"
+  },
+  "username": "admin",
+  "email": "fkkhan201@yahoo.com",
+  "password": "fca17e3ac4a072471824774a26e6aedc:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:e6558211",
+  "role": "ADMIN",
+  "status": "UNBAN",
+  "created_by": null,
+  "created_at": {
+    "$date": "2025-04-08T09:04:50.625Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f4e9c07f000aaa94fabca3"
+  },
+  "username": "anika",
+  "email": "anika@gmail.com",
+  "password": "3fc648ad8e81902766d8040512aa6c40:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:1163e71e",
+  "role": "USER",
+  "status": "UNBAN",
+  "created_by": null,
+  "created_at": {
+    "$date": "2025-04-08T09:17:29.933Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:29.289Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "username": "nargis",
+  "email": "nargis@gmail.com",
+  "password": "3916c921870c36c60716dd4a4d06b4b7:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:36cbbe37",
+  "role": "SELLER",
+  "status": "UNBAN",
+  "created_by": null,
+  "created_at": {
+    "$date": "2025-04-08T09:46:23.730Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:30.256Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67f4f1a78e64644f2a59c007"
+  },
+  "username": "jojo",
+  "email": "jojo@gmail.com",
+  "password": "b23a25ce1acb8072a303da579c5c4700:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:96fa1fa1",
+  "role": "MANAGER",
+  "status": "UNBAN",
+  "created_by": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-08T09:51:24.324Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:31.225Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67f5106d478f472d7f0902ad"
+  },
+  "username": "emon",
+  "email": "emon@gmail.com",
+  "password": "3916c921870c36c60716dd4a4d06b4b7:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:36cbbe37",
+  "role": "INVENTORY",
+  "status": "UNBAN",
+  "created_by": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-08T09:46:23.730Z"
+  },
+  "__v": 0,
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:31.975Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67f6161b236b011793aaea6c"
+  },
+  "username": "jo",
+  "email": "jo@gmail.com",
+  "password": "e22c1f4d0900af07ab63ef30a9497335:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:53cf4cb4",
+  "role": "USER",
+  "status": "UNBAN",
+  "created_by": null,
+  "created_at": {
+    "$date": "2025-04-09T06:37:07.535Z"
+  },
+  "createdAt": {
+    "$date": "2025-04-09T06:39:23.601Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:32.713Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f6949b71e0d8ff98a26f5e"
+  },
+  "username": "test",
+  "email": "123@gmail.com",
+  "password": "708c0197079a33e2ce0c9851fc16978a:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:219c5713",
+  "role": "USER",
+  "status": "UNBAN",
+  "created_by": null,
+  "createdAt": {
+    "$date": "2025-04-09T15:39:07.175Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:33.344Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67f8f572c53870fac0f44a8e"
+  },
+  "username": "Md Fardin",
+  "email": "21225103451@cse.bubt.edu.bd",
+  "password": "ef2852ff9375a9ec44c12f100f11a43f:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:fbee3d93",
+  "role": "USER",
+  "status": "UNBAN",
+  "created_by": null,
+  "createdAt": {
+    "$date": "2025-04-11T10:56:50.016Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T08:36:34.869Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67fa6443c4208c7602bae07e"
+  },
+  "username": "sara",
+  "email": "sara@gmail.com",
+  "password": "86839a7d51b8ed4af2b8b4543ab0822c:016ac1d2551495aa2ad524ed24dd539fcb3a4b2de851ba20ab03786ed0a262fd:2d7fa4e2",
+  "role": "ACCOUNTANT",
+  "status": "UNBAN",
+  "created_by": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "createdAt": {
+    "$date": "2025-04-12T13:01:55.607Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T13:01:55.607Z"
+  },
+  "__v": 0
+}]

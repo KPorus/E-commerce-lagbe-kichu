@@ -1,0 +1,705 @@
+[{
+  "_id": {
+    "$oid": "67f60be290df8f71528bac61"
+  },
+  "title": "Smartphone XYZ Pro",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "ELECTRONICS",
+  "price": 62,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178144/products/zaz2hadfg50dtsvhq0c9.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178146/products/qgpocbrdlpjbepwtthrs.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:48:14.644Z"
+  },
+  "rating": 0,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": true,
+  "newProduct": false,
+  "specialDiscount": true,
+  "featured": true,
+  "discountEndTime": {
+    "$date": "2025-04-16T05:55:46.616Z"
+  },
+  "createdAt": {
+    "$date": "2025-04-09T05:55:46.622Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-14T07:39:55.249Z"
+  },
+  "__v": 0,
+  "quantity": 34
+},
+{
+  "_id": {
+    "$oid": "67f60c94db3387e276c1983d"
+  },
+  "title": "Premium Hoodie",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 1000,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178323/products/gd5e7llyqs0lxd0mdxwo.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178325/products/jjws3styt6vucqolx4oi.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 4,
+  "discount": 4,
+  "reviews": [],
+  "bestArrival": true,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": false,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T05:58:44.850Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-14T07:58:23.076Z"
+  },
+  "__v": 0,
+  "quantity": 39
+},
+{
+  "_id": {
+    "$oid": "67f60cafdb3387e276c19843"
+  },
+  "title": "Premium Hoodie 2",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 100,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178350/products/red6uwmj2lajzjdcfqra.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178351/products/mrgrzfj1qy4a7cclsfnp.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 4,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": false,
+  "newProduct": false,
+  "specialDiscount": true,
+  "featured": true,
+  "discountEndTime": {
+    "$date": "2025-04-16T05:59:11.579Z"
+  },
+  "createdAt": {
+    "$date": "2025-04-09T05:59:11.581Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-11T11:43:12.091Z"
+  },
+  "__v": 0,
+  "quantity": 35
+},
+{
+  "_id": {
+    "$oid": "67f60cd4db3387e276c19847"
+  },
+  "title": "Premium Hoodie women",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 100,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178382/products/g1ibth33sydjcrjqjdzm.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178388/products/obkq9h1farftk47o8yfm.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 4,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": false,
+  "newProduct": false,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T05:59:48.533Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-11T11:43:12.091Z"
+  },
+  "__v": 0,
+  "quantity": 39
+},
+{
+  "_id": {
+    "$oid": "67f60cfbdb3387e276c1984b"
+  },
+  "title": "Premium Cloth",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 100,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178425/products/taokyqkfvwijgoi69de8.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178427/products/enyefy3efk2nbd1bqarb.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 5,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": false,
+  "newProduct": false,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:00:27.383Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T06:00:27.383Z"
+  },
+  "__v": 0,
+  "quantity": 40
+},
+{
+  "_id": {
+    "$oid": "67f60d16db3387e276c19851"
+  },
+  "title": "Premium Cloth 2",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 100,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178452/products/przybgg6ulbnzqe33m84.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178454/products/ixpbenqaty85lgbkelgu.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 5,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": false,
+  "newProduct": false,
+  "specialDiscount": true,
+  "featured": true,
+  "discountEndTime": {
+    "$date": "2025-04-16T05:59:11.579Z"
+  },
+  "createdAt": {
+    "$date": "2025-04-09T06:00:54.101Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T06:00:54.101Z"
+  },
+  "__v": 0,
+  "quantity": 40
+},
+{
+  "_id": {
+    "$oid": "67f60d29db3387e276c19857"
+  },
+  "title": "Premium Cloth men",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 100,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178468/products/olovmjv2epwmk6brzzcr.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178473/products/uvre31rm7naxatu7vnsp.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 0,
+  "discount": 0,
+  "reviews": [
+    {
+      "comment": "not bad ",
+      "rating": 0,
+      "name": "test"
+    }
+  ],
+  "bestArrival": false,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:01:13.764Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T03:15:22.330Z"
+  },
+  "__v": 1,
+  "quantity": 34
+},
+{
+  "_id": {
+    "$oid": "67f60d8bdb3387e276c1985b"
+  },
+  "title": "Chair",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "FURNITURE",
+  "price": 100,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178563/products/jyh52ffhrc5y7hwbhngi.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178571/products/xk0twueahzjfvezp4r24.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 4.5,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": true,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:02:51.325Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-11T11:43:12.091Z"
+  },
+  "__v": 0,
+  "quantity": 38
+},
+{
+  "_id": {
+    "$oid": "67f60dcddb3387e276c1985f"
+  },
+  "title": "Chair 2",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "FURNITURE",
+  "price": 450,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178636/products/xfpzegcyzikubxrkamfh.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178637/products/s8omvvvkwqrdgpnsxgvg.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 4.5,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": true,
+  "newProduct": false,
+  "specialDiscount": true,
+  "featured": false,
+  "discountEndTime": {
+    "$date": "2025-04-16T06:03:57.820Z"
+  },
+  "createdAt": {
+    "$date": "2025-04-09T06:03:57.821Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-11T11:43:12.091Z"
+  },
+  "__v": 0,
+  "quantity": 38
+},
+{
+  "_id": {
+    "$oid": "67f60e0edb3387e276c19863"
+  },
+  "title": "Chair 3",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "FURNITURE",
+  "price": 450,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178698/products/hyktczyiuvplfntkmsg4.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178702/products/rtfgoenvb6slgahcplfo.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T05:57:49.422Z"
+  },
+  "rating": 4.5,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": false,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": false,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:05:02.692Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-09T06:05:02.692Z"
+  },
+  "__v": 0,
+  "quantity": 40
+},
+{
+  "_id": {
+    "$oid": "67f60e6284ee65faeb8b70c6"
+  },
+  "title": "Chair 4",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "FURNITURE",
+  "price": 700,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178784/products/ggsh2fogfyx0jr7ngp1e.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178786/products/jrngsmy0ugqzexushfjo.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T06:06:02.235Z"
+  },
+  "rating": 4.5,
+  "discount": 0,
+  "reviews": [
+    {
+      "comment": "asd",
+      "rating": 4,
+      "name": "test"
+    },
+    {
+      "comment": "qwe",
+      "rating": 5,
+      "name": "test"
+    }
+  ],
+  "bestArrival": true,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": false,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:06:26.488Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T03:26:56.571Z"
+  },
+  "__v": 2,
+  "quantity": 39
+},
+{
+  "_id": {
+    "$oid": "67f60ee384ee65faeb8b70ca"
+  },
+  "title": "WomenCloth",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 250,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178913/products/ynuywtda7sxgslzwcsfj.jpg",
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178913/products/flqdunsxe6oou2ingbyq.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178915/products/d8g7appkqrstvellpytw.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T06:06:02.235Z"
+  },
+  "rating": 3,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": false,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:08:35.823Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-11T11:51:37.683Z"
+  },
+  "__v": 0,
+  "quantity": -17
+},
+{
+  "_id": {
+    "$oid": "67f60eef84ee65faeb8b70ce"
+  },
+  "title": "Women Cloth",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 250,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178923/products/sqafkhsuvaedzfhtqmu9.jpg",
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178924/products/t8j6r7aifogbcllrcd8s.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178927/products/nl6gsg1lghqjknfkdi10.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T06:06:02.235Z"
+  },
+  "rating": 4,
+  "discount": 0,
+  "reviews": [
+    {
+      "comment": "seller was nice ",
+      "rating": 4,
+      "name": "test"
+    }
+  ],
+  "bestArrival": false,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:08:47.138Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T02:43:36.002Z"
+  },
+  "__v": 1,
+  "quantity": 27
+},
+{
+  "_id": {
+    "$oid": "67f60eff84ee65faeb8b70d2"
+  },
+  "title": "Women Cloth 1",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 250,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178938/products/cbgqz07ubhih3yz7a3hf.jpg",
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178938/products/equg4ieqh8kmbsoijkzq.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178942/products/fzymb9ndwj5lh7nobhuj.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T06:06:02.235Z"
+  },
+  "rating": 4,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": false,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:09:03.187Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-11T11:42:15.368Z"
+  },
+  "__v": 0,
+  "quantity": -4
+},
+{
+  "_id": {
+    "$oid": "67f60f0e84ee65faeb8b70d6"
+  },
+  "title": "Women Cloth 2",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 350,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178956/products/jienwecq0urrizxg6nh2.jpg",
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744178957/products/f0mjkvyxmllhevyezrj4.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744178958/products/uff6qsy9n5m6rrzyl80q.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T06:06:02.235Z"
+  },
+  "rating": 4,
+  "discount": 0,
+  "reviews": [
+    {
+      "comment": "mom love it ",
+      "rating": 4,
+      "name": "fardin"
+    },
+    {
+      "comment": "asdsa",
+      "rating": 4,
+      "name": "test"
+    }
+  ],
+  "bestArrival": true,
+  "newProduct": false,
+  "specialDiscount": true,
+  "featured": false,
+  "discountEndTime": {
+    "$date": "2025-04-16T06:09:18.356Z"
+  },
+  "createdAt": {
+    "$date": "2025-04-09T06:09:18.357Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T03:40:40.835Z"
+  },
+  "__v": 2,
+  "quantity": 40
+},
+{
+  "_id": {
+    "$oid": "67f60fa984ee65faeb8b70da"
+  },
+  "title": "Smart Watch",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "ELECTRONICS",
+  "price": 75,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744179112/products/ab1vnpfbppfhxlg421jw.png",
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744179112/products/i7waqo8ztycgp8fqjqdd.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744179114/products/xlwseyybl4zqqvvqrvvr.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T06:06:02.235Z"
+  },
+  "rating": 4,
+  "discount": 0,
+  "reviews": [],
+  "bestArrival": true,
+  "newProduct": false,
+  "specialDiscount": true,
+  "featured": false,
+  "discountEndTime": {
+    "$date": "2025-04-16T06:11:53.902Z"
+  },
+  "createdAt": {
+    "$date": "2025-04-09T06:11:53.903Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-11T11:43:12.091Z"
+  },
+  "__v": 0,
+  "quantity": 38
+},
+{
+  "_id": {
+    "$oid": "67f60fdd84ee65faeb8b70de"
+  },
+  "title": "Smart Watch 1",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "ELECTRONICS",
+  "price": 140,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744179157/products/ztzrsgvtvxy5pj1oihnu.png",
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744179138/products/hx2fqm2zhbqzjjwyaz4h.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744179166/products/t5cebvm4xzfmqntu3vud.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T06:06:02.235Z"
+  },
+  "rating": 3.5,
+  "discount": 0,
+  "reviews": [
+    {
+      "comment": "nice product",
+      "rating": 3,
+      "name": "fardin"
+    },
+    {
+      "comment": "nice product",
+      "rating": 4,
+      "name": "test"
+    }
+  ],
+  "bestArrival": false,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T06:12:45.771Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-12T01:57:15.938Z"
+  },
+  "__v": 2,
+  "quantity": 36
+},
+{
+  "_id": {
+    "$oid": "67f6240e0c8b14ae92b5f145"
+  },
+  "title": "Cloth",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.",
+  "category": "CLOTHING",
+  "price": 1400,
+  "quantity": 40,
+  "images": [
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744184332/products/itadp5xy9z2ruxl0kcpd.jpg",
+    "https://res.cloudinary.com/dhulnf9mb/image/upload/v1744184333/products/a25dsd88zyogeoeao54d.jpg"
+  ],
+  "previewVideo": "https://res.cloudinary.com/dhulnf9mb/video/upload/v1744184334/products/jdcwvrlogaarcirqybhg.mp4",
+  "Owner": {
+    "$oid": "67f4f078f63c75f476ed42b1"
+  },
+  "created_at": {
+    "$date": "2025-04-09T07:36:49.948Z"
+  },
+  "rating": 2.5,
+  "discount": 10,
+  "reviews": [
+    {
+      "comment": "don't like it much",
+      "rating": 2,
+      "name": "fardin"
+    },
+    {
+      "comment": "seller was awesome",
+      "rating": 3,
+      "name": "test"
+    }
+  ],
+  "bestArrival": false,
+  "newProduct": true,
+  "specialDiscount": false,
+  "featured": true,
+  "discountEndTime": null,
+  "createdAt": {
+    "$date": "2025-04-09T07:38:54.351Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-14T07:40:13.309Z"
+  },
+  "__v": 2
+}]
