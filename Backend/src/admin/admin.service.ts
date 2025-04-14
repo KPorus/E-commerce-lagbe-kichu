@@ -16,7 +16,7 @@ export class AdminService {
   async getAllUsers(
     query: GetUsersQueryDto,
   ): Promise<{ data: Users[]; total: number }> {
-    console.log(query);
+    // console.log(query);
     const { role, status, text, page = 1, limit = 10 } = query;
     const filter: any = {};
 
