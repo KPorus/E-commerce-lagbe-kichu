@@ -18,10 +18,7 @@ import { SellerGuard } from 'src/auth/guard/seller.guard';
 // import { ManagerGuard } from 'src/auth/guard/manager.guard';
 import { CreateProductDto, CreateUserDto } from './dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import {
-  FileFieldsInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 // import { InventoryGuard } from 'src/auth/guard/inventory.guard';
 import { CombinGuard } from 'src/auth/guard/combin.guard';
 import { GetUser } from 'src/auth/decorator';
@@ -101,11 +98,11 @@ export class SellerController {
   // Edit a product ===============================
   @UseGuards(CombinGuard)
   @Put('/update-product/:id')
-  @UseInterceptors(FilesInterceptor('images', 5))
   async updateProduct(
     @Param('id') id: string,
-    @UploadedFiles() files: Express.Multer.File[],
-    @Body() body: CreateProductDto,
+    @UploadedFiles()
+    @Body()
+    body: CreateProductDto,
   ) {
     const existingProduct = await this.sellerService.getProductByTitle(
       body.title,
@@ -114,34 +111,8 @@ export class SellerController {
       throw new NotFoundException('Product not found');
     }
 
-    const imageFiles = files.filter((file) =>
-      file.mimetype.startsWith('image'),
-    );
-    const videoFiles = files.filter((file) =>
-      file.mimetype.startsWith('video'),
-    );
-
-    let imageUrls: string[] = existingProduct.images || [];
-    if (imageFiles.length > 0) {
-      const imageUploadPromises = imageFiles.map((file) =>
-        this.cloudinaryService.uploadImage(file),
-      );
-      const uploadedImages = await Promise.all(imageUploadPromises);
-      const newImageUrls = uploadedImages.map((img) => img.secure_url);
-
-      imageUrls = [...imageUrls, ...newImageUrls];
-    }
-
-    let videoUrl: string = existingProduct.previewVideo || '';
-    if (videoFiles.length > 0) {
-      const video = videoFiles[0];
-      videoUrl = await this.cloudinaryService.uploadVideo(video);
-    }
-
     return this.sellerService.updateProduct(id, {
       ...body,
-      images: imageUrls,
-      previewVideo: videoUrl,
     });
   }
 

@@ -44,6 +44,10 @@ export interface IProductCard {
   discount?: number;
   specialDiscount: boolean;
   discountEndTime?: Date | null;
+  category: "ELECTRONICS" | "CLOTHING" | "FURNITURE" | "BEAUTY";
+  newProduct: boolean;
+  bestArrival: boolean;
+  featured: boolean;
 }
 
 

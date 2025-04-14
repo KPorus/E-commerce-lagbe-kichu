@@ -4,19 +4,7 @@ import Rating from "../rating";
 import ProductCardBtn from "./button";
 import Link from "next/link";
 
-const ProductCard = ({
-  productId,
-  image,
-  description,
-  title,
-  owner,
-  price,
-  discountPrice,
-  specialDiscount,
-  discountEndTime,
-  rating,
-  refetch
-}: {
+interface ProductCardProps {
   productId: string;
   image: string;
   title: string;
@@ -28,20 +16,44 @@ const ProductCard = ({
   discountEndTime?: Date | null;
   rating?: number;
   refetch?: () => void;
-}) => {
+  category: "ELECTRONICS" | "CLOTHING" | "FURNITURE" | "BEAUTY";
+  quantity: number;
+  newProduct: boolean;
+  bestArrival: boolean;
+  featured: boolean;
+}
+
+const ProductCard = ({
+  productId,
+  image,
+  description,
+  title,
+  owner,
+  price,
+  discountPrice,
+  specialDiscount,
+  discountEndTime,
+  rating,
+  refetch,
+  category,
+  quantity,
+  newProduct,
+  bestArrival,
+  featured,
+}: ProductCardProps) => {
   return (
     <Box
       key={productId}
-      className="border rounded-lg"
+      className="border rounded-lg shadow-lg hover:shadow-xl transition-shadow"
       p={4}
       alignItems={"center"}
       mb={8}
+      bg="white"
+      borderRadius="lg"
     >
       <Link href={`/product/${productId}`} passHref>
         <Box as="span">
-          {" "}
-          {/* Use Box as span to avoid <a> nesting issues */}
-          <Box w={"257px"} h={"236px"} position="relative" mb={4}>
+          <Box w={"257px"} h={"236px"} position="relative" mb={4} mx="auto">
             <Image
               src={image}
               alt={title}
@@ -50,6 +62,8 @@ const ProductCard = ({
               style={{
                 width: "255px",
                 height: "236px",
+                objectFit: "cover",
+                borderRadius: "8px",
               }}
             />
           </Box>
@@ -61,19 +75,18 @@ const ProductCard = ({
           >
             {title}
           </Text>
-          <Text textStyle={"md"} my={2}>
+          <Text textStyle={"md"} my={2} color="gray.600">
             {description.slice(0, 210)}
           </Text>
-          <Flex justifyContent={"space-between"}>
+          <Flex justifyContent={"space-between"} alignItems="center">
             <Text color={"#151875"} className="text-lg font-semibold">
-              {discountPrice ? `$${discountPrice}` : `$${price}`}
+              {discountPrice ? `BDT ${(price*discountPrice)/100}` : `$${price}`}
             </Text>
             <Rating value={Number(rating)} />
           </Flex>
         </Box>
       </Link>
 
-      {/* Buttons are outside the Link to avoid nesting */}
       <ProductCardBtn
         _id={productId}
         image={image}
@@ -85,6 +98,12 @@ const ProductCard = ({
         rating={rating}
         discount={discountPrice}
         refetch={refetch}
+        description={description}
+        category={category}
+        quantity={quantity}
+        newProduct={newProduct}
+        bestArrival={bestArrival}
+        featured={featured}
       />
     </Box>
   );

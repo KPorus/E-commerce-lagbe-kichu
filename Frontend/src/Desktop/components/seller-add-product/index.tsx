@@ -5,7 +5,6 @@ import { Button, Container, Grid, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IProductCard } from "@/types/product.types";
-import Link from "next/link";
 import ProductCard from "@/Desktop/common/product-card";
 import LoadingPage from "@/app/loading";
 import AddProductModal from "./addProductModal";
@@ -53,8 +52,8 @@ const SellerAddProduct = () => {
         <Grid templateColumns="repeat(4, 1fr)" gap={4}>
           {data && data.length > 0 ? (
             data.map((product: IProductCard) => (
-              <Link key={product._id} href={`/product/${product._id}`}>
                 <ProductCard
+                  key={product._id}
                   productId={product._id}
                   image={product.images[0]}
                   title={product.title}
@@ -66,8 +65,12 @@ const SellerAddProduct = () => {
                   discountPrice={product.discount}
                   rating={product.rating}
                   refetch={refetch}
+                  category={product.category}
+                  quantity={product.quantity}
+                  newProduct={product.newProduct}
+                  bestArrival={product.bestArrival}
+                  featured={product.featured}
                 />
-              </Link>
             ))
           ) : (
             <Text>No products found.</Text>
