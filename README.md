@@ -34,7 +34,10 @@ NEXT_PUBLIC_API_URL= Local Api url
 Replace the values with your actual credentials.
 
 ---
+## 💻 Database — Setup
 
+1. Import the dummy data from **Dummy Data** folder from **mongo atlas** or **compass**
+   
 ## 💻 Backend — NestJS Setup
 
 1. **Clone the Repository**
@@ -101,6 +104,10 @@ root/
 ├── frontend/      # Next.js Frontend
 │   └── src/
 |     ------
+├── Dummy Data/
+│   ├── orders.json
+│   ├── products.json
+│   └── users.json
 └── README.md
 ```
 
