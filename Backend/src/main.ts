@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://e-commerce-lagbe-kichu.vercel.app/',
+    origin: 'http://localhost:3000',
     credentials: true,
   });
   app.useGlobalPipes(
