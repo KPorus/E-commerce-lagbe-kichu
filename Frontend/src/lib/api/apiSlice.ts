@@ -57,10 +57,42 @@ export const apiSlice = createApi({
     getEmployee: builder.query({
       query: (token) => ({
         url: `seller/get-employee`,
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }),
+    }),
+
+    editProduct: builder.mutation({
+      query: ({ id, token, productData }) => ({
+        url: `/seller/update-product/${id}`,
+        method: "PUT",
+        body: productData,
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    }),
+
+    getSellerOrder: builder.query({
+      query: ({ page = 1, limit = 10, token }) => ({
+        url: `seller/get-orders`,
+        method: "GET",
+        params: { page, limit },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
+
+    updateOrderStatus:builder.mutation({
+      query:({id,status,token})=>({
+        url: `seller/update-orders-status/${id}`,
+        method: "PATCH",
+        body:{status},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
     }),
 
     getSellerProduct: builder.query({
@@ -190,7 +222,10 @@ export const {
   useDeleteProductMutation,
   useToggleUserStatusMutation,
   useCheckoutMutation,
+  useGetSellerOrderQuery,
   useGetEmployeeQuery,
+  useUpdateOrderStatusMutation,
+  useEditProductMutation,
   useGetSellerProductQuery,
   useAddProductMutation,
   useCreateEmployeeMutation,

@@ -1,15 +1,9 @@
-import {
-  Button,
-  Input,
-  Textarea,
-  Text,
-  Flex,
-  Box,
-} from "@chakra-ui/react";
+import { Button, Input, Textarea, Text, Flex, Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAppSelector } from "@/lib/hooks";
 import { toaster } from "@/components/ui/toaster";
 import styles from "./modal.module.scss";
+import { useEditProductMutation } from "@/lib/api/apiSlice";
 
 interface FormData {
   title: string;
@@ -22,9 +16,7 @@ interface FormData {
   discount: number;
   featured: boolean;
   specialDiscount: boolean;
-  discountEndTime?: string; // ISO string for datetime-local
-  images: File[]; // New images to upload
-  video: File | null;
+  discountEndTime?: number;
 }
 
 interface EditProductModalProps {
@@ -39,17 +31,15 @@ interface EditProductModalProps {
     quantity: number;
     discount: number;
     specialDiscount: boolean;
-    images: string[];
     rating?: number;
     Owner: string;
     newProduct: boolean;
     bestArrival: boolean;
     featured: boolean;
-    discountEndTime?: Date | null;
+    discountEndTime?: number;
   };
-  refetch: () => void; // Added refetch prop
+  refetch: () => void;
 }
-
 const EditProductModal = ({
   isOpen,
   onClose,
@@ -57,7 +47,7 @@ const EditProductModal = ({
   refetch,
 }: EditProductModalProps) => {
   const token = useAppSelector((state) => state.auth.token);
-
+  const [editProduct] = useEditProductMutation();
   const [formData, setFormData] = useState<FormData>({
     title: product.title,
     description: product.description,
@@ -69,16 +59,8 @@ const EditProductModal = ({
     discount: product.discount || 0,
     featured: product.featured,
     specialDiscount: product.specialDiscount || false,
-    discountEndTime: product.discountEndTime
-      ? new Date(product.discountEndTime).toISOString().slice(0, 16)
-      : "",
-    images: [], // Start with no new images
-    video: null,
+    discountEndTime: product.discountEndTime || undefined
   });
-
-  const [existingImages] = useState<string[]>(
-    product.images
-  );
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -104,88 +86,83 @@ const EditProductModal = ({
     }));
   };
 
-//   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const files = e.target.files;
-//     if (files) {
-//       const selectedFiles = Array.from(files);
-//       const totalImages = selectedFiles.length + existingImages.length;
+  //   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     const files = e.target.files;
+  //     if (files) {
+  //       const selectedFiles = Array.from(files);
+  //       const totalImages = selectedFiles.length + existingImages.length;
 
-//       if (totalImages > 5) {
-//         toaster.warning({
-//           title: "Image Limit",
-//           description: "You can have a maximum of 5 images.",
-//         });
-//         return;
-//       }
+  //       if (totalImages > 5) {
+  //         toaster.warning({
+  //           title: "Image Limit",
+  //           description: "You can have a maximum of 5 images.",
+  //         });
+  //         return;
+  //       }
 
-//       if (totalImages < 1) {
-//         toaster.warning({
-//           title: "Image Required",
-//           description: "At least one image is required.",
-//         });
-//         return;
-//       }
+  //       if (totalImages < 1) {
+  //         toaster.warning({
+  //           title: "Image Required",
+  //           description: "At least one image is required.",
+  //         });
+  //         return;
+  //       }
 
-//       setFormData((prev) => ({ ...prev, images: selectedFiles }));
-//     }
-//   };
+  //       setFormData((prev) => ({ ...prev, images: selectedFiles }));
+  //     }
+  //   };
 
-//   const handleRemoveExistingImage = (index: number) => {
-//     setExistingImages((prev) => prev.filter((_, i) => i !== index));
-//   };
+  //   const handleRemoveExistingImage = (index: number) => {
+  //     setExistingImages((prev) => prev.filter((_, i) => i !== index));
+  //   };
 
-//   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const file = e.target.files?.[0] || null;
-//     setFormData((prev) => ({ ...prev, video: file }));
-//   };
+  //   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     const file = e.target.files?.[0] || null;
+  //     setFormData((prev) => ({ ...prev, video: file }));
+  //   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (existingImages.length + formData.images.length < 1) {
+    if (!formData.title.trim() || !formData.description.trim()) {
       toaster.error({
-        title: "Image Required",
-        description: "At least one image is required.",
+        title: "Validation Error",
+        description: "Title and description cannot be empty.",
       });
       return;
     }
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("description", formData.description);
-    formDataToSend.append("price", String(formData.price));
-    formDataToSend.append("quantity", String(formData.quantity));
-    formDataToSend.append("category", formData.category);
-    formDataToSend.append("newProduct", String(formData.newProduct));
-    formDataToSend.append("bestArrival", String(formData.bestArrival));
-    formDataToSend.append("discount", String(formData.discount));
-    formDataToSend.append("featured", String(formData.featured));
-    formDataToSend.append("specialDiscount", String(formData.specialDiscount));
-    if (formData.discountEndTime) {
-      formDataToSend.append("discountEndTime", formData.discountEndTime);
+    if (formData.price <= 0 || formData.quantity <= 0) {
+      toaster.error({
+        title: "Validation Error",
+        description: "Price and quantity must be greater than zero.",
+      });
+      return;
     }
-    formData.images.forEach((image) => {
-      formDataToSend.append("images", image);
-    });
 
-    if (formData.video) {
-      formDataToSend.append("video", formData.video);
-    }
+    const productData = {
+      title: formData.title,
+      description: formData.description,
+      price: Number(formData.price),
+      quantity: Number(formData.quantity),
+      category: formData.category,
+      newProduct: formData.newProduct,
+      bestArrival: formData.bestArrival,
+      discount: Number(formData.discount),
+      featured: formData.featured,
+      specialDiscount: formData.specialDiscount,
+      discountDurationInDays: Number(formData.discountEndTime),
+    };
+
+    console.log("Sending payload:", productData);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/seller/update-product/${product._id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // "Content-Type": "multipart/form-data",
-          },
-          body: formDataToSend,
-        }
-      );
-      const data = await res.json();
-      console.log(data);
+      const res = await editProduct({
+        id: product._id,
+        token: token || "",
+        productData,
+      }).unwrap();
+      console.log(res);
       toaster.success({
         title: "Product Updated",
         description: "The product has been successfully updated.",
@@ -393,10 +370,7 @@ const EditProductModal = ({
                 type="datetime-local"
                 id="discountEndTime"
                 name="discountEndTime"
-                value={
-                  formData.discountEndTime ||
-                  ""
-                }
+                value={formData.discountEndTime || ""}
                 onChange={handleInputChange}
               />
             </div>

@@ -13,14 +13,14 @@ interface ProductCardProps {
   price: number;
   discountPrice?: number;
   specialDiscount: boolean;
-  discountEndTime?: Date | null;
+  discountEndTime?: number;
   rating?: number;
   refetch?: () => void;
-  category: "ELECTRONICS" | "CLOTHING" | "FURNITURE" | "BEAUTY";
-  quantity: number;
-  newProduct: boolean;
-  bestArrival: boolean;
-  featured: boolean;
+  category?: "ELECTRONICS" | "CLOTHING" | "FURNITURE" | "BEAUTY";
+  quantity?: number;
+  newProduct?: boolean;
+  bestArrival?: boolean;
+  featured?: boolean;
 }
 
 const ProductCard = ({
@@ -80,7 +80,7 @@ const ProductCard = ({
           </Text>
           <Flex justifyContent={"space-between"} alignItems="center">
             <Text color={"#151875"} className="text-lg font-semibold">
-              {discountPrice ? `BDT ${(price*discountPrice)/100}` : `$${price}`}
+              {discountPrice ? `BDT ${(price*discountPrice)/100}` : `BDT ${price}`}
             </Text>
             <Rating value={Number(rating)} />
           </Flex>

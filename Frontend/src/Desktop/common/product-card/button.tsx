@@ -16,16 +16,16 @@ interface ProductCardBtnProps {
   price: number;
   Owner: string;
   specialDiscount: boolean;
-  discountEndTime?: Date | null;
+  discountEndTime?: number;
   rating?: number;
   discount?: number;
   refetch?: () => void;
   description: string;
-  category: "ELECTRONICS" | "CLOTHING" | "FURNITURE" | "BEAUTY";
-  quantity: number;
-  newProduct: boolean;
-  bestArrival: boolean;
-  featured: boolean;
+  category?: "ELECTRONICS" | "CLOTHING" | "FURNITURE" | "BEAUTY";
+  quantity?: number;
+  newProduct?: boolean;
+  bestArrival?: boolean;
+  featured?: boolean;
 }
 
 const ProductCardBtn = ({
@@ -50,7 +50,8 @@ const ProductCardBtn = ({
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
   const token = useAppSelector((state) => state.auth.token);
-  const [deleteProduct] = useDeleteProductMutation();
+
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const addCart = () => {
@@ -68,10 +69,7 @@ const ProductCardBtn = ({
         discount: discount || 0,
       })
     );
-    toaster.success({
-      title: "Item Added!",
-      // description: "The item has been successfully added to your cart.",
-    });
+    toaster.success({ title: "Item Added!" });
   };
 
   const handleBuyNow = () => {
@@ -84,19 +82,20 @@ const ProductCardBtn = ({
   ) => {
     e.stopPropagation();
     e.preventDefault();
+
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
     const res = await deleteProduct({ id: _id, token });
     if (res.data) {
-      if (refetch) {
-        refetch();
-      }
+      refetch?.();
       toaster.success({
         title: "Item Deleted!",
-        description: "The item has been successfully deleted.",
+        description: "Product has been removed.",
       });
     } else {
       toaster.error({
-        title: "Fail",
-        description: "The item deletion action failed.",
+        title: "Delete Failed",
+        description: "Could not delete the product.",
       });
     }
   };
@@ -108,8 +107,9 @@ const ProductCardBtn = ({
           <>
             <Button
               intent="addCart"
-              text="Delete"
+              text={isDeleting ? "Deleting..." : "Delete"}
               onClick={handleDeleteProduct}
+              disabled={isDeleting}
             />
             <Button
               intent="buyNow"
@@ -124,11 +124,12 @@ const ProductCardBtn = ({
           </>
         )}
       </Flex>
+
       {user?.role === "SELLER" || user?.role === "ADMIN" ? (
         <EditProductModal
           isOpen={isEditModalOpen}
           onClose={() => {
-            if (refetch) refetch();
+            refetch?.();
             setIsEditModalOpen(false);
           }}
           product={{
@@ -136,16 +137,15 @@ const ProductCardBtn = ({
             title,
             description,
             price,
-            category,
-            quantity,
+            category: category || "BEAUTY",
+            quantity: quantity || 1,
             discount: discount || 0,
             specialDiscount,
-            images: [image],
             rating,
             Owner,
-            newProduct,
-            bestArrival,
-            featured,
+            newProduct: newProduct || false,
+            bestArrival: bestArrival || false,
+            featured: featured || false,
             discountEndTime,
           }}
           refetch={refetch || (() => {})}

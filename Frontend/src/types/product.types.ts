@@ -16,7 +16,7 @@ export interface Product {
   newProduct: boolean;
   specialDiscount: boolean;
   featured: boolean;
-  discountEndTime: Date | null;
+  discountEndTime: number | null;
 }
 
 export interface cartProduct {
@@ -27,7 +27,7 @@ export interface cartProduct {
   image: string;
   Owner: string;
   specialDiscount?: boolean;
-  discountEndTime?: Date | null;
+  discountEndTime?: number;
   rating?: number;
   description?: string;
   discount?: number;
@@ -43,14 +43,12 @@ export interface IProductCard {
   description: string;
   discount?: number;
   specialDiscount: boolean;
-  discountEndTime?: Date | null;
+  discountEndTime?: number;
   category: "ELECTRONICS" | "CLOTHING" | "FURNITURE" | "BEAUTY";
   newProduct: boolean;
   bestArrival: boolean;
   featured: boolean;
 }
-
-
 
 export interface GetProductsParams {
   category?: string;

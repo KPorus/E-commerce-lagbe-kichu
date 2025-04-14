@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -100,10 +101,10 @@ export class SellerController {
   @Put('/update-product/:id')
   async updateProduct(
     @Param('id') id: string,
-    @UploadedFiles()
     @Body()
     body: CreateProductDto,
   ) {
+    console.log(body);
     const existingProduct = await this.sellerService.getProductByTitle(
       body.title,
     );
@@ -150,15 +151,23 @@ export class SellerController {
   // Get Seller order ================================
   @Get('/get-orders')
   @UseGuards(CombinTwoGuard)
-  getOrders(@GetUser() user: any) {
-    console.log(user);
+  async getOrders(
+    @GetUser() user: any,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
     const id = user._id || user.created_by;
     if (!id) {
       throw new BadRequestException('Invalid user ID');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    return this.sellerService.getOrders(id);
+
+    // Convert to numbers and ensure limit has a maximum cap
+    const pageNumber = Number(page) > 0 ? Number(page) : 1;
+    const limitNumber = Number(limit) > 0 ? Number(limit) : 10;
+
+    return this.sellerService.getOrders(id, pageNumber, limitNumber);
   }
+
   @Patch('/update-orders-status/:id')
   @UseGuards(CombinTwoGuard)
   updateOrdersStatus(

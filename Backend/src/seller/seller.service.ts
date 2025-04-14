@@ -160,15 +160,66 @@ export class SellerService {
       throw new BadRequestException(error);
     }
   }
-  async getOrders(id: string) {
+  async getOrders(id: string, page = 1, limit = 10) {
     try {
-      const orders = await this.orderModel.find({
-        'products.sellerID': id,
-      });
-      if (orders.length === 0) {
+      const pageNumber = Number(page) > 0 ? Number(page) : 1;
+      const limitNumber = Number(limit) > 0 ? Number(limit) : 10;
+      const skip = (pageNumber - 1) * limitNumber;
+
+      const [orders, totalCount] = await Promise.all([
+        this.orderModel
+          .aggregate([
+            { $match: { 'products.sellerID': new Types.ObjectId(id) } },
+            { $sort: { createdAt: -1 } },
+            { $skip: skip },
+            { $limit: limitNumber },
+            { $unwind: '$products' },
+            {
+              $lookup: {
+                from: 'products',
+                localField: 'products.productId',
+                foreignField: '_id',
+                as: 'productDetails',
+              },
+            },
+            {
+              $addFields: {
+                'products.productTitle': {
+                  $arrayElemAt: ['$productDetails.title', 0],
+                },
+              },
+            },
+            {
+              $group: {
+                _id: '$_id',
+                user: { $first: '$user' },
+                totalAmount: { $first: '$totalAmount' },
+                shippingAddress: { $first: '$shippingAddress' },
+                paymentMethod: { $first: '$paymentMethod' },
+                status: { $first: '$status' },
+                createdAt: { $first: '$createdAt' },
+                updatedAt: { $first: '$updatedAt' },
+                products: { $push: '$products' },
+              },
+            },
+          ])
+          .exec(),
+
+        this.orderModel.countDocuments({
+          'products.sellerID': new Types.ObjectId(id),
+        }),
+      ]);
+
+      if (!orders.length) {
         throw new NotFoundException('No orders found for this seller');
       }
-      return orders;
+
+      return {
+        total: totalCount,
+        page: pageNumber,
+        limit: limitNumber,
+        orders,
+      };
     } catch (error: unknown) {
       if (error instanceof Error) {
         handleMongoErrors(error);
